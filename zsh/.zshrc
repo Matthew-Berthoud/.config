@@ -5,6 +5,7 @@ setopt PROMPT_SUBST
 alias ls="ls -G"
 alias la="ls -lahG"
 alias treedme='tree -a --gitignore --dirsfirst -I ".git/" --noreport | pbcopy'
+alias daily="source $SCRIPTS/daily_note.sh"
 alias cssbattle="pbpaste | python $SCRIPTS/cssbattle_condenser.py | pbcopy"
 alias love="/Applications/love.app/Contents/MacOS/love"
 alias v="nvim"
