@@ -1,6 +1,9 @@
 bindkey -v
 bindkey "^?" backward-delete-char
 bindkey "^H" backward-delete-char
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'v' edit-command-line
 
 setopt IGNORE_EOF
 setopt PROMPT_SUBST
