@@ -10,6 +10,7 @@ vim.pack.add({
 })
 
 require('mini.pick').setup()
+require('oil').setup()
 
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
@@ -43,7 +44,14 @@ vim.keymap.set('n', '<leader>sf', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>sg', ':Pick grep<CR>')
 vim.keymap.set('n', '<leader>sl', ':Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>sl', ':Pick resume<CR>')
-vim.keymap.set('n', '\\', require('oil').toggle_float)
+
+vim.keymap.set('n', '\\', function()
+  if vim.bo.filetype == 'oil' then
+    require('oil').close()
+  else
+    require('oil').open()
+  end
+end, { desc = 'Toggle Oil' })
 
 require('mason').setup()
 require('mason-tool-installer').setup({ ensure_installed = { 'prettierd', 'prettier', 'stylua', 'ts_ls', 'eslint', 'lua_ls' } })
