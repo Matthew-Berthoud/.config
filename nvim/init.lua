@@ -1,20 +1,21 @@
 vim.pack.add({
   { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
-  { src = 'https://github.com/mason-org/mason.nvim' },
   { src = 'https://github.com/mason-org/mason-lspconfig.nvim' },
+  { src = 'https://github.com/mason-org/mason.nvim' },
   { src = 'https://github.com/nvim-mini/mini.pick' },
+  { src = 'https://github.com/nvim-mini/mini.extra' },
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
 })
 
 require('mini.pick').setup()
+require('mini.extra').setup()
 require('oil').setup()
 
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
-vim.cmd('set completeopt+=noselect')
 
 vim.g.mapleader = ' '
 vim.o.clipboard = 'unnamedplus'
@@ -38,12 +39,36 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader> ', ':Pick buffers<CR>')
 vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
+vim.keymap.set('n', '<leader>l', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>')
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 vim.keymap.set('n', '<leader>sf', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>sg', ':Pick grep<CR>')
 vim.keymap.set('n', '<leader>sl', ':Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>sl', ':Pick resume<CR>')
+
+vim.keymap.set({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action)
+vim.keymap.set('n', 'grr', function()
+  require('mini.extra').pickers.lsp({ scope = 'references' })
+end)
+vim.keymap.set('n', 'gri', function()
+  require('mini.extra').pickers.lsp({ scope = 'implementation' })
+end)
+vim.keymap.set('n', 'grd', function()
+  require('mini.extra').pickers.lsp({ scope = 'definition' })
+end)
+vim.keymap.set('n', 'grD', vim.lsp.buf.declaration)
+vim.keymap.set('n', 'gO', function()
+  require('mini.extra').pickers.lsp({ scope = 'document_symbol' })
+end)
+vim.keymap.set('n', 'gW', function()
+  require('mini.extra').pickers.lsp({ scope = 'workspace_symbol' })
+end)
+vim.keymap.set('n', 'grt', function()
+  require('mini.extra').pickers.lsp({ scope = 'type_definition' })
+end)
 
 vim.keymap.set('n', '\\', function()
   if vim.bo.filetype == 'oil' then
@@ -54,7 +79,18 @@ vim.keymap.set('n', '\\', function()
 end, { desc = 'Toggle Oil' })
 
 require('mason').setup()
-require('mason-tool-installer').setup({ ensure_installed = { 'prettierd', 'prettier', 'stylua', 'ts_ls', 'eslint', 'lua_ls' } })
+
+require('mason-tool-installer').setup({
+  ensure_installed = {
+    'prettierd',
+    'prettier',
+    'stylua',
+    'ts_ls',
+    'eslint',
+    'lua_ls',
+  },
+})
+
 require('mason-lspconfig').setup({
   handlers = {
     function(server_name)
@@ -81,15 +117,6 @@ require('conform').setup({
     typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
     lua = { 'stylua' },
   },
-})
-
-vim.api.nvim_create_autocmd('LspAttach', {
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client:supports_method('textDocument/completion') then
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-    end
-  end,
 })
 
 require('gitsigns').setup({
@@ -145,6 +172,16 @@ require('gitsigns').setup({
   end,
 })
 
+vim.api.nvim_create_autocmd('LspAttach', {
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client:supports_method('textDocument/completion') then
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+    end
+  end,
+})
+vim.cmd('set completeopt+=noselect')
+
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -152,3 +189,30 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+
+local function pack_clean()
+  local active_plugins = {}
+  local unused_plugins = {}
+
+  for _, plugin in ipairs(vim.pack.get()) do
+    active_plugins[plugin.spec.name] = plugin.active
+  end
+
+  for _, plugin in ipairs(vim.pack.get()) do
+    if not active_plugins[plugin.spec.name] then
+      table.insert(unused_plugins, plugin.spec.name)
+    end
+  end
+
+  if #unused_plugins == 0 then
+    print('No unused plugins.')
+    return
+  end
+
+  local choice = vim.fn.confirm('Remove unused plugins?', '&Yes\n&No', 2)
+  if choice == 1 then
+    vim.pack.del(unused_plugins)
+  end
+end
+
+vim.keymap.set('n', '<leader>pc', pack_clean)
