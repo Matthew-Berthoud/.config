@@ -10,16 +10,14 @@ brew "git-lfs"
 brew "go-task"
 brew "golang"
 brew "imagemagick"
-brew "ko"                             # SAMBA
 brew "kubectl"
 brew "libxml2"
-brew "mas"                            # Mac App Store
+brew "mas"
 brew "minikube"
 brew "neovim"
 brew "nvm"
 brew "pandoc"
-brew "php"                            # GDSC
-brew "poetry"                         # python package management
+brew "poetry"
 brew "pyenv"
 brew "ripgrep"
 brew "tmux"
@@ -32,12 +30,12 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 cask "google-chrome"
 cask "karabiner-elements"
-cask "linearmouse"                    # set some custom mouse options
+cask "linearmouse"
 cask "lm-studio"
 cask "ollama-app"
 cask "postman"
-cask "prismlauncher"                  # prism minecraft launcher
+cask "prismlauncher"
 cask "slack"
 cask "spotify"
 cask "tailscale-app"
-cask "zotero"                         # research
+cask "zotero"
