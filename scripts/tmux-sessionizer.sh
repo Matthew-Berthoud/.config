@@ -6,7 +6,10 @@ else
   repos_dirs=($HOME/repos/*(D/))
   personal_repos=(${repos_dirs:#*/black-cape})
   atoms_dirs=($HOME/repos/black-cape/ATOMS/*(D/))
-  selected=$(print -l "$HOME/.config" $personal_repos $atoms_dirs | fzf)
+  cdao_dirs=($HOME/repos/black-cape/CDAO/*(D/))
+  config="$HOME/.config"
+  notes="$HOME/Desktop/black-cape/notes" 
+  selected=$(print -l $config $notes $atoms_dirs $cdao_dirs $personal_repos | fzf)
 fi
 
 if [[ -z $selected ]]; then
