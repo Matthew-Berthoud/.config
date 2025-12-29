@@ -36,7 +36,7 @@ cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 cask "google-chrome"
 cask "karabiner-elements"
-cask "linearmouse"
+cask "linearmouse"                    # set some custom mouse options
 cask "lm-studio"
 cask "logi-options+"                  # mouse and keyboard
 cask "microsoft-excel"
@@ -48,5 +48,4 @@ cask "slack"
 cask "spotify"
 cask "tailscale-app"
 cask "zotero"                         # research
-cask "zulu@8"                        # java sdk for minecraft
 tap "sdkman/tap"                      # java stuff for OMS-bridge
