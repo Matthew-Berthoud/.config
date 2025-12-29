@@ -1,15 +1,12 @@
 #!/usr/bin/env zsh
 
-search_dirs=(
-  "$HOME/repos"
-  "$HOME/repos/black-cape"
-  "$HOME/.config"
-)
-
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  selected=$(ls -d $^search_dirs/*(D/) | fzf)
+  repos_dirs=($HOME/repos/*(D/))
+  personal_repos=(${repos_dirs:#*/black-cape})
+  atoms_dirs=($HOME/repos/black-cape/ATOMS/*(D/))
+  selected=$(print -l "$HOME/.config" $personal_repos $atoms_dirs | fzf)
 fi
 
 if [[ -z $selected ]]; then
