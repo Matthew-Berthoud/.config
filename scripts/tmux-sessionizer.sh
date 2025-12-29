@@ -3,10 +3,10 @@
 if [[ $# -eq 1 ]]; then
   selected=$1
 else
-  repos_dirs=($HOME/repos/*(D/))
+  repos_dirs=($REPOS/*(D/))
   personal_repos=(${repos_dirs:#*/black-cape})
-  atoms_dirs=($HOME/repos/black-cape/ATOMS/*(D/))
-  cdao_dirs=($HOME/repos/black-cape/CDAO/*(D/))
+  atoms_dirs=($WORK_REPOS/ATOMS/*(D/))
+  cdao_dirs=($WORK_REPOS/CDAO/*(D/))
   config="$HOME/.config"
   notes="$HOME/Desktop/black-cape/notes" 
   selected=$(print -l $config $notes $atoms_dirs $cdao_dirs $personal_repos | fzf)
