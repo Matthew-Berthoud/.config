@@ -32,22 +32,18 @@ vim.o.undofile = true
 vim.o.winborder = 'rounded'
 vim.o.wrap = false
 
-vim.keymap.set('n', '\\', require('oil').toggle_float)
+-- vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>') -- enable when editing this file a lot
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<leader> ', ':Pick buffers<CR>')
 vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
-vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>')
 vim.keymap.set('n', '<leader>sf', ':Pick files<CR>')
 vim.keymap.set('n', '<leader>sg', ':Pick grep<CR>')
 vim.keymap.set('n', '<leader>sl', ':Pick grep_live<CR>')
 vim.keymap.set('n', '<leader>sl', ':Pick resume<CR>')
-
-vim.keymap.set('n', '<leader>lf', function()
-  require('conform').format({ lsp_fallback = true })
-end)
+vim.keymap.set('n', '\\', require('oil').toggle_float)
 
 require('mason').setup()
 require('mason-tool-installer').setup({ ensure_installed = { 'prettierd', 'prettier', 'stylua', 'ts_ls', 'eslint', 'lua_ls' } })
