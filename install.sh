@@ -7,3 +7,5 @@ ln -sf "$CONFIG/git/.gitconfig" "$HOME/.gitconfig"
 ln -sf "$CONFIG/git/.gitconfig-work" "$HOME/.gitconfig-work"
 
 brew bundle --clean
+
+npm install -g typescript-language-server vscode-langservers-extracted prettierd
