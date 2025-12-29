@@ -6,4 +6,4 @@ ln -sf "$CONFIG/zsh/.zprofile" "$HOME/.zprofile"
 ln -sf "$CONFIG/git/.gitconfig" "$HOME/.gitconfig"
 ln -sf "$CONFIG/git/.gitconfig-work" "$HOME/.gitconfig-work"
 
-brew bundle
+brew bundle --clean

@@ -21,26 +21,19 @@ brew "pandoc"
 brew "php"                            # GDSC
 brew "poetry"                         # python package management
 brew "pyenv"
-brew "rbenv"
 brew "ripgrep"
-brew "rustup"
-brew "sdkman-cli"                     # java stuff for OMS-bridge
 brew "tmux"
 brew "tree"
 brew "unzip"
 brew "uv"
 brew "wget"
 cask "docker-desktop"
-cask "eqmac"
 cask "font-jetbrains-mono-nerd-font"  
 cask "ghostty"
 cask "google-chrome"
 cask "karabiner-elements"
 cask "linearmouse"                    # set some custom mouse options
 cask "lm-studio"
-cask "logi-options+"                  # mouse and keyboard
-cask "microsoft-excel"
-cask "obs"
 cask "ollama-app"
 cask "postman"
 cask "prismlauncher"                  # prism minecraft launcher
@@ -48,4 +41,3 @@ cask "slack"
 cask "spotify"
 cask "tailscale-app"
 cask "zotero"                         # research
-tap "sdkman/tap"                      # java stuff for OMS-bridge
