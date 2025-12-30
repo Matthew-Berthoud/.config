@@ -1,42 +1,84 @@
 vim.pack.add({
-  { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
+  { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
-  { src = 'https://github.com/mason-org/mason-lspconfig.nvim' },
-  { src = 'https://github.com/mason-org/mason.nvim' },
-  { src = 'https://github.com/nvim-mini/mini.pick' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
+  { src = 'https://github.com/nvim-mini/mini.icons' },
+  { src = 'https://github.com/nvim-mini/mini.pick' },
+  { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
 })
 
+vim.lsp.enable({ 'lua_ls', 'ts_ls', 'eslint', 'ruff' })
+
 require('mini.pick').setup()
 require('mini.extra').setup()
+require('mini.icons').setup()
+require('nvim-web-devicons').setup()
 require('oil').setup({
+  lsp_file_methods = {
+    enabled = true,
+    timeout_ms = 1000,
+    autosave_changes = true,
+  },
   view_options = {
     show_hidden = true,
   },
+  columns = {
+    'icon',
+    'permissions',
+    'size',
+    'mtime',
+  },
+})
+require('which-key').setup()
+require('which-key').add({
+  { '<leader>s', group = '[S]earch' },
+  { '<leader>t', group = '[T]oggle' },
+  { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+  { '<leader>p', group = 'Vim [P]ack' },
+  { '<leader>m', group = '[M]arkdown' },
+  { 'gr', group = '[R]eferences' },
 })
 
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
 
 vim.g.mapleader = ' '
-vim.o.clipboard = 'unnamedplus'
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
+vim.o.confirm = true
 vim.o.cursorcolumn = false
+vim.o.cursorline = true
+vim.o.expandtab = true
 vim.o.ignorecase = true
+vim.o.inccommand = 'split'
+vim.o.list = true
+vim.o.mouse = 'a'
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.shiftwidth = 2
+vim.o.showmode = false
 vim.o.showtabline = 2
 vim.o.signcolumn = 'yes'
+vim.o.smartcase = true
 vim.o.smartindent = true
+vim.o.softtabstop = 2
+vim.o.splitbelow = true
+vim.o.splitright = true
 vim.o.swapfile = false
 vim.o.tabstop = 2
 vim.o.termguicolors = true
 vim.o.undofile = true
 vim.o.winborder = 'rounded'
-vim.o.wrap = false
+vim.o.breakindent = true
+
+vim.opt.linebreak = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>') -- enable when editing this file a lot
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
@@ -44,67 +86,70 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<leader> ', ':Pick buffers<CR>')
-vim.keymap.set('n', '<leader>h', ':Pick help<CR>')
-vim.keymap.set('n', '<leader>l', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>')
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
-vim.keymap.set('n', '<leader>sf', ':Pick files<CR>')
-vim.keymap.set('n', '<leader>sg', ':Pick grep<CR>')
-vim.keymap.set('n', '<leader>sl', ':Pick grep_live<CR>')
-vim.keymap.set('n', '<leader>sl', ':Pick resume<CR>')
+vim.keymap.set('n', '<leader><leader>', ':Pick buffers<CR>', { desc = '[ ] Find existing buffers' })
+vim.keymap.set('n', '<leader>md', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>', { desc = '[M]ark[D]own LivePreview for current file' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
+vim.keymap.set('n', '\\', ':Oil<CR>', { desc = '[\\] Open Oil' })
 
-vim.keymap.set({ 'n', 'x' }, 'gra', vim.lsp.buf.code_action)
-vim.keymap.set('n', 'grr', function()
-  require('mini.extra').pickers.lsp({ scope = 'references' })
-end)
-vim.keymap.set('n', 'gri', function()
-  require('mini.extra').pickers.lsp({ scope = 'implementation' })
-end)
-vim.keymap.set('n', 'grd', function()
-  require('mini.extra').pickers.lsp({ scope = 'definition' })
-end)
-vim.keymap.set('n', 'grD', vim.lsp.buf.declaration)
-vim.keymap.set('n', 'gO', function()
-  require('mini.extra').pickers.lsp({ scope = 'document_symbol' })
-end)
-vim.keymap.set('n', 'gW', function()
-  require('mini.extra').pickers.lsp({ scope = 'workspace_symbol' })
-end)
-vim.keymap.set('n', 'grt', function()
-  require('mini.extra').pickers.lsp({ scope = 'type_definition' })
-end)
-
-vim.keymap.set('n', '\\', function()
-  if vim.bo.filetype == 'oil' then
-    require('oil').close()
-  else
-    require('oil').open()
+local map = function(keys, func, desc, mode, scope)
+  mode = mode or 'n'
+  if type(func) == 'string' then
+    local lsp_scope = func
+    func = function()
+      require('mini.extra').pickers.lsp({ scope = lsp_scope })
+    end
   end
-end, { desc = 'Toggle Oil' })
+  vim.keymap.set(mode, keys, func, { desc = 'LSP: ' .. desc })
+end
 
-require('mason').setup()
+map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+map('grr', 'references', '[G]oto [R]eferences')
+map('gri', 'implementation', '[G]oto [I]mplementation')
+map('grd', 'definition', '[G]oto [D]efinition')
+map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+map('gO', 'document_symbol', 'Open Document Symbols')
+map('gW', 'workspace_symbol', 'Open Workspace Symbols')
+map('grt', 'type_definition', '[G]oto [T]ype Definition')
 
-require('mason-tool-installer').setup({
-  ensure_installed = {
-    'prettierd',
-    'prettier',
-    'stylua',
-    'ts_ls',
-    'eslint',
-    'lua_ls',
-  },
+vim.schedule(function()
+  vim.o.clipboard = 'unnamedplus'
+end)
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'go',
+  callback = function()
+    vim.opt_local.expandtab = false
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
 })
 
-require('mason-lspconfig').setup({
-  handlers = {
-    function(server_name)
-      local success, config = pcall(require, 'lsp.' .. server_name)
-      if not success then
-        config = {}
-      end
-      require('lspconfig')[server_name].setup(config)
-    end,
-  },
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'python', '*.c' },
+  callback = function()
+    vim.opt_local.expandtab = true
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+  end,
+})
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = function()
+    -- You can set specific colors, or link them to existing groups like 'Title', 'Function', etc.
+    vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { fg = '#e06c75', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { fg = '#e5c07b', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { fg = '#98c379', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.4.markdown', { fg = '#61afef', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.5.markdown', { fg = '#c678dd', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.6.markdown', { fg = '#56b6c2', bold = true })
+  end,
 })
 
 require('conform').setup({
@@ -115,15 +160,32 @@ require('conform').setup({
     }
   end,
   formatters_by_ft = {
+    css = { 'prettierd', 'prettier', stop_after_first = true },
+    graphql = { 'prettierd', 'prettier', stop_after_first = true },
+    html = { 'prettierd', 'prettier', stop_after_first = true },
     javascript = { 'prettierd', 'prettier', stop_after_first = true },
     javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+    json = { 'prettierd', 'prettier', stop_after_first = true },
+    less = { 'prettierd', 'prettier', stop_after_first = true },
+    lua = { 'stylua' },
+    markdown = { 'prettierd', 'prettier', stop_after_first = true },
+    python = { 'ruff_organize_imports', 'ruff_fix', 'ruff_format' },
+    scss = { 'prettierd', 'prettier', stop_after_first = true },
     typescript = { 'prettierd', 'prettier', stop_after_first = true },
     typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-    lua = { 'stylua' },
+    vue = { 'prettierd', 'prettier', stop_after_first = true },
+    yaml = { 'prettierd', 'prettier', stop_after_first = true },
   },
 })
 
 require('gitsigns').setup({
+  signs = {
+    add = { text = '+' },
+    change = { text = '~' },
+    delete = { text = '_' },
+    topdelete = { text = '‾' },
+    changedelete = { text = '~' },
+  },
   on_attach = function(bufnr)
     local gitsigns = require('gitsigns')
 
@@ -219,4 +281,4 @@ local function pack_clean()
   end
 end
 
-vim.keymap.set('n', '<leader>pc', pack_clean)
+vim.keymap.set('n', '<leader>pc', pack_clean, { desc = '[C]lean Vim [P]ack (remove unused plugins)' })

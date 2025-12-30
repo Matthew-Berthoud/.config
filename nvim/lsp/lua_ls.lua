@@ -1,4 +1,5 @@
 return {
+  command = { 'lua-language-server' },
   settings = {
     Lua = {
       runtime = { version = 'LuaJIT' },
@@ -6,6 +7,6 @@ return {
         checkThirdParty = false,
         library = { vim.env.VIMRUNTIME },
       },
-    }
-  }
+    },
+  },
 }

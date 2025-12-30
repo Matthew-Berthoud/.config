@@ -8,25 +8,21 @@
       "rev": "130beacf8a51f00aede9c31064c749136679a321",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
-    "mason-lspconfig.nvim": {
-      "rev": "4cfe411526a7a99c18281135e8b4765ae6330d15",
-      "src": "https://github.com/williamboman/mason-lspconfig.nvim"
-    },
-    "mason-tool-installer.nvim": {
-      "rev": "517ef5994ef9d6b738322664d5fdd948f0fdeb46",
-      "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
-    },
-    "mason.nvim": {
-      "rev": "57e5a8addb8c71fb063ee4acda466c7cf6ad2800",
-      "src": "https://github.com/mason-org/mason.nvim"
-    },
     "mini.extra": {
       "rev": "673633b97b64292c82d473ea2bd31b767dbe3907",
       "src": "https://github.com/nvim-mini/mini.extra"
     },
+    "mini.icons": {
+      "rev": "efc85e42262cd0c9e1fdbf806c25cb0be6de115c",
+      "src": "https://github.com/nvim-mini/mini.icons"
+    },
     "mini.pick": {
       "rev": "8cb40ee55dd156957b1116eded6135e6aeaa078b",
       "src": "https://github.com/nvim-mini/mini.pick"
+    },
+    "nvim-web-devicons": {
+      "rev": "6788013bb9cb784e606ada44206b0e755e4323d7",
+      "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "oil.nvim": {
       "rev": "634049414b9ba7b827f050dc5a873bf68944c640",
@@ -35,6 +31,10 @@
     "vague.nvim": {
       "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",
       "src": "https://github.com/vague2k/vague.nvim"
+    },
+    "which-key.nvim": {
+      "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
+      "src": "https://github.com/folke/which-key.nvim"
     }
   }
 }
