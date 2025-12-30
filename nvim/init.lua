@@ -12,7 +12,11 @@ vim.pack.add({
 
 require('mini.pick').setup()
 require('mini.extra').setup()
-require('oil').setup()
+require('oil').setup({
+  view_options = {
+    show_hidden = true,
+  },
+})
 
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')

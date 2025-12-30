@@ -1,6 +1,5 @@
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-export PATH="$HOME/.lmstudio/bin:$PATH"
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$PATH:$(go env GOPATH)/bin"
 
