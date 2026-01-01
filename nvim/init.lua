@@ -1,4 +1,6 @@
 vim.pack.add({
+  { src = 'https://github.com/HakonHarnes/img-clip.nvim' },
+  { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
@@ -8,6 +10,7 @@ vim.pack.add({
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
+  { src = 'https://github.com/christoomey/vim-tmux-navigator' },
 })
 
 vim.lsp.enable({ 'lua_ls', 'ts_ls', 'eslint', 'ruff' })
@@ -37,10 +40,9 @@ require('which-key').add({
   { '<leader>s', group = '[S]earch' },
   { '<leader>t', group = '[T]oggle' },
   { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
-  { '<leader>p', group = 'Vim [P]ack' },
-  { '<leader>m', group = '[M]arkdown' },
   { 'gr', group = '[R]eferences' },
 })
+require('img-clip').setup()
 
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
@@ -81,19 +83,19 @@ vim.opt.linebreak = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 -- vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>') -- enable when editing this file a lot
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>', { desc = 'Move focus to the left nvim window or tmux pane' })
+vim.keymap.set('n', '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>', { desc = 'Move focus to the lower nvim window or tmux pane' })
+vim.keymap.set('n', '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>', { desc = 'Move focus to the upper nvim window or tmux pane' })
+vim.keymap.set('n', '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>', { desc = 'Move focus to the right nvim window or tmux pane' })
+vim.keymap.set('n', '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>', { desc = 'Move focus to previous nvim window or tmux pane' })
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader><leader>', ':Pick buffers<CR>', { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>md', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>', { desc = '[M]ark[D]own LivePreview for current file' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', '\\', ':Oil<CR>', { desc = '[\\] Open Oil' })
+vim.keymap.set('n', '<leader>e', ':Oil<CR>', { desc = 'Open Oil [E]xplorer' })
 
 local map = function(keys, func, desc, mode, scope)
   mode = mode or 'n'
@@ -282,3 +284,5 @@ local function pack_clean()
 end
 
 vim.keymap.set('n', '<leader>pc', pack_clean, { desc = '[C]lean Vim [P]ack (remove unused plugins)' })
+vim.keymap.set('n', '<leader>pi', '<cmd>PasteImage<cr>', { desc = '[P]aste [I]mage from clipboard' })
+vim.keymap.set('n', '<leader>pl', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>', { desc = '[L]ive[P]review for current file' })

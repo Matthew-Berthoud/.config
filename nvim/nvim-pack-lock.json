@@ -8,6 +8,14 @@
       "rev": "130beacf8a51f00aede9c31064c749136679a321",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "img-clip.nvim": {
+      "rev": "b6ddfb97b5600d99afe3452d707444afda658aca",
+      "src": "https://github.com/HakonHarnes/img-clip.nvim"
+    },
+    "live-preview.nvim": {
+      "rev": "04c2cc92476d7b3882a0c7155bb13c4d7ee4bfbf",
+      "src": "https://github.com/brianhuster/live-preview.nvim"
+    },
     "mini.extra": {
       "rev": "673633b97b64292c82d473ea2bd31b767dbe3907",
       "src": "https://github.com/nvim-mini/mini.extra"
@@ -31,6 +39,10 @@
     "vague.nvim": {
       "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",
       "src": "https://github.com/vague2k/vague.nvim"
+    },
+    "vim-tmux-navigator": {
+      "rev": "c45243dc1f32ac6bcf6068e5300f3b2b237e576a",
+      "src": "https://github.com/christoomey/vim-tmux-navigator"
     },
     "which-key.nvim": {
       "rev": "3aab2147e74890957785941f0c1ad87d0a44c15a",
