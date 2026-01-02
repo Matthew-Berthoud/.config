@@ -1,21 +1,21 @@
 #!/usr/bin/env zsh
 
 if [[ $# -eq 1 ]]; then
-  selected=$1
+  selected=${1:A}
 else
-  repos_dirs=($REPOS/*(D/))
+  repos_dirs=($REPOS/*(N/D))
   personal_repos=(${repos_dirs:#*/black-cape})
-  work_repos=($WORK_REPOS/*(D/)/*(D/))
+  work_repos=($WORK_REPOS/*/*(N/D))
   config="$HOME/.config"
   notes="$HOME/Desktop/black-cape/notes" 
-  selected=$(print -l $config $notes $work_repos $personal_repos | fzf)
+  selected=$(print -l $config $notes $work_repos $personal_repos | fzf --delimiter / --with-nth -1)
 fi
 
 if [[ -z $selected ]]; then
   exit 0
 fi
 
-selected_name=$(echo ${selected:t} | tr . _)
+selected_name=$(basename "$selected" | tr . _)
 
 if [[ -z $TMUX ]]; then
   tmux new-session -A -s "$selected_name" -c "$selected"

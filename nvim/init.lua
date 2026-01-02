@@ -13,7 +13,7 @@ vim.pack.add({
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
 })
 
-vim.lsp.enable({ 'lua_ls', 'ts_ls', 'eslint', 'ruff' })
+vim.lsp.enable({ 'lua_ls', 'ts_ls', 'ruff' })
 
 require('mini.pick').setup()
 require('mini.extra').setup()
@@ -82,12 +82,11 @@ vim.o.breakindent = true
 vim.opt.linebreak = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
--- vim.keymap.set('n', '<leader>o', ':update<CR> :source<CR>') -- enable when editing this file a lot
-vim.keymap.set('n', '<c-h>', '<cmd><C-U>TmuxNavigateLeft<cr>', { desc = 'Move focus to the left nvim window or tmux pane' })
-vim.keymap.set('n', '<c-j>', '<cmd><C-U>TmuxNavigateDown<cr>', { desc = 'Move focus to the lower nvim window or tmux pane' })
-vim.keymap.set('n', '<c-k>', '<cmd><C-U>TmuxNavigateUp<cr>', { desc = 'Move focus to the upper nvim window or tmux pane' })
-vim.keymap.set('n', '<c-l>', '<cmd><C-U>TmuxNavigateRight<cr>', { desc = 'Move focus to the right nvim window or tmux pane' })
-vim.keymap.set('n', '<c-\\>', '<cmd><C-U>TmuxNavigatePrevious<cr>', { desc = 'Move focus to previous nvim window or tmux pane' })
+vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<cr>', { desc = 'Move focus to the left nvim window or tmux pane' })
+vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<cr>', { desc = 'Move focus to the lower nvim window or tmux pane' })
+vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<cr>', { desc = 'Move focus to the upper nvim window or tmux pane' })
+vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<cr>', { desc = 'Move focus to the right nvim window or tmux pane' })
+vim.keymap.set('n', '<c-\\>', ':TmuxNavigatePrevious<cr>', { desc = 'Move focus to previous nvim window or tmux pane' })
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader><leader>', ':Pick buffers<CR>', { desc = '[ ] Find existing buffers' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -108,13 +107,8 @@ local map = function(keys, func, desc, mode, scope)
   vim.keymap.set(mode, keys, func, { desc = 'LSP: ' .. desc })
 end
 
-map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
-map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
-map('grr', 'references', '[G]oto [R]eferences')
-map('gri', 'implementation', '[G]oto [I]mplementation')
 map('grd', 'definition', '[G]oto [D]efinition')
 map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-map('gO', 'document_symbol', 'Open Document Symbols')
 map('gW', 'workspace_symbol', 'Open Workspace Symbols')
 map('grt', 'type_definition', '[G]oto [T]ype Definition')
 
@@ -157,26 +151,25 @@ vim.api.nvim_create_autocmd('ColorScheme', {
 require('conform').setup({
   format_on_save = function()
     return {
-      timeout_ms = 500,
       lsp_format = 'fallback',
     }
   end,
   formatters_by_ft = {
-    css = { 'prettierd', 'prettier', stop_after_first = true },
-    graphql = { 'prettierd', 'prettier', stop_after_first = true },
-    html = { 'prettierd', 'prettier', stop_after_first = true },
-    javascript = { 'prettierd', 'prettier', stop_after_first = true },
-    javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-    json = { 'prettierd', 'prettier', stop_after_first = true },
-    less = { 'prettierd', 'prettier', stop_after_first = true },
-    lua = { 'stylua' },
-    markdown = { 'prettierd', 'prettier', stop_after_first = true },
+    javascript = { 'prettierd' },
+    javascriptreact = { 'prettierd' },
+    typescript = { 'prettierd' },
+    typescriptreact = { 'prettierd' },
+    vue = { 'prettierd' },
+    css = { 'prettierd' },
+    scss = { 'prettierd' },
+    less = { 'prettierd' },
+    html = { 'prettierd' },
+    json = { 'prettierd' },
+    yaml = { 'prettierd' },
+    markdown = { 'prettierd' },
+    graphql = { 'prettierd' },
     python = { 'ruff_organize_imports', 'ruff_fix', 'ruff_format' },
-    scss = { 'prettierd', 'prettier', stop_after_first = true },
-    typescript = { 'prettierd', 'prettier', stop_after_first = true },
-    typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-    vue = { 'prettierd', 'prettier', stop_after_first = true },
-    yaml = { 'prettierd', 'prettier', stop_after_first = true },
+    lua = { 'stylua' },
   },
 })
 
@@ -241,9 +234,15 @@ require('gitsigns').setup({
 })
 
 vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('ts_ls', {}),
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client:supports_method('textDocument/completion') then
+      local chars = {}
+      for i = 32, 126 do
+        table.insert(chars, string.char(i))
+      end
+      client.server_capabilities.completionProvider.triggerCharacters = chars
       vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
     end
   end,
@@ -286,3 +285,4 @@ end
 vim.keymap.set('n', '<leader>pc', pack_clean, { desc = '[C]lean Vim [P]ack (remove unused plugins)' })
 vim.keymap.set('n', '<leader>pi', '<cmd>PasteImage<cr>', { desc = '[P]aste [I]mage from clipboard' })
 vim.keymap.set('n', '<leader>pl', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>', { desc = '[L]ive[P]review for current file' })
+vim.keymap.set('n', '<leader>pr', ':update<CR> :source<CR>', { desc = '[P]lease [R]eload nvim configuration' })
