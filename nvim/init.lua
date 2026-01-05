@@ -95,22 +95,7 @@ vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [
 vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
 vim.keymap.set('n', '<leader>e', ':Oil<CR>', { desc = 'Open Oil [E]xplorer' })
-
-local map = function(keys, func, desc, mode, scope)
-  mode = mode or 'n'
-  if type(func) == 'string' then
-    local lsp_scope = func
-    func = function()
-      require('mini.extra').pickers.lsp({ scope = lsp_scope })
-    end
-  end
-  vim.keymap.set(mode, keys, func, { desc = 'LSP: ' .. desc })
-end
-
-map('grd', 'definition', '[G]oto [D]efinition')
-map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-map('gW', 'workspace_symbol', 'Open Workspace Symbols')
-map('grt', 'type_definition', '[G]oto [T]ype Definition')
+vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { desc = '[G]o to [D]efinition' })
 
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'

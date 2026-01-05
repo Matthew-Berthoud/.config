@@ -12,6 +12,12 @@
         }
       },
       "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "distance" : {
+          "vertical" : 3
+        },
         "modifiers" : {
           "vertical" : {
             "shift" : {
@@ -22,6 +28,9 @@
         },
         "reverse" : {
           "vertical" : true
+        },
+        "speed" : {
+          "vertical" : 0
         }
       }
     }
