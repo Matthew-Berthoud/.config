@@ -43,6 +43,9 @@ require('which-key').add({
   { 'gr', group = '[R]eferences' },
 })
 require('img-clip').setup()
+require('live-preview').setup({
+  picker = 'mini.pick',
+})
 
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
@@ -95,7 +98,7 @@ vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [
 vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
 vim.keymap.set('n', '<leader>e', ':Oil<CR>', { desc = 'Open Oil [E]xplorer' })
-vim.keymap.set('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', { desc = '[G]o to [D]efinition' })
+vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.definition()<CR>', { desc = '[G]o to [D]efinition' })
 
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
