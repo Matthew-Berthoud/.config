@@ -33,3 +33,7 @@ PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
 export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
 # End of LM Studio CLI section
 
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
