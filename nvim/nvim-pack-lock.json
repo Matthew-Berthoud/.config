@@ -16,6 +16,10 @@
       "rev": "04c2cc92476d7b3882a0c7155bb13c4d7ee4bfbf",
       "src": "https://github.com/brianhuster/live-preview.nvim"
     },
+    "mini.completion": {
+      "rev": "4d451f82f193f6751719935a63d16ccb79a76e0b",
+      "src": "https://github.com/nvim-mini/mini.completion"
+    },
     "mini.extra": {
       "rev": "673633b97b64292c82d473ea2bd31b767dbe3907",
       "src": "https://github.com/nvim-mini/mini.extra"

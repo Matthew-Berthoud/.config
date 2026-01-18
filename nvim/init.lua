@@ -1,8 +1,10 @@
 vim.pack.add({
   { src = 'https://github.com/HakonHarnes/img-clip.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
+  { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
+  { src = 'https://github.com/nvim-mini/mini.completion' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
   { src = 'https://github.com/nvim-mini/mini.icons' },
   { src = 'https://github.com/nvim-mini/mini.pick' },
@@ -10,10 +12,45 @@ vim.pack.add({
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
-  { src = 'https://github.com/christoomey/vim-tmux-navigator' },
 })
 
-vim.lsp.enable({ 'lua_ls', 'ts_ls', 'ruff' })
+vim.lsp.config['lua_ls'] = {
+  cmd = { 'lua-language-server' },
+  filetypes = { 'lua' },
+  root_markers = { '.luarc.json', '.luarc.jsonc', '.git' },
+  settings = { Lua = { runtime = { version = 'LuaJIT' } } },
+}
+
+vim.lsp.config['ts_ls'] = {
+  cmd = { 'typescript-language-server', '--stdio' },
+  filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+  root_markers = { 'package.json', '.git' },
+  single_file_support = true,
+  init_options = {
+    preferences = {
+      includeInlayParameterNameHints = 'all',
+      includeInlayFunctionParameterTypeHints = true,
+      importModuleSpecifierPreference = 'non-relative',
+    },
+  },
+}
+
+vim.lsp.config['pyright'] = {
+  cmd = { 'pyright-langserver', '--stdio' },
+  filetypes = { 'python' },
+  root_markers = { 'pyproject.toml', 'setup.py', 'requirements.txt', '.git' },
+  settings = {
+    python = {
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = 'workspace',
+      },
+    },
+  },
+}
+
+vim.lsp.enable({ 'lua_ls', 'ts_ls', 'pyright' })
 
 require('mini.pick').setup()
 require('mini.extra').setup()
@@ -45,6 +82,16 @@ require('which-key').add({
 require('img-clip').setup()
 require('live-preview').setup({
   picker = 'mini.pick',
+})
+require('mini.completion').setup({
+  lsp_completion = {
+    source_func = 'omnifunc',
+    auto_setup = false,
+  },
+  window = {
+    info = { border = 'rounded' },
+    signature = { border = 'rounded' },
+  },
 })
 
 vim.cmd('colorscheme vague')
@@ -221,22 +268,6 @@ require('gitsigns').setup({
   end,
 })
 
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('ts_ls', {}),
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client:supports_method('textDocument/completion') then
-      local chars = {}
-      for i = 32, 126 do
-        table.insert(chars, string.char(i))
-      end
-      client.server_capabilities.completionProvider.triggerCharacters = chars
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
-    end
-  end,
-})
-vim.cmd('set completeopt+=noselect')
-
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -273,4 +304,4 @@ end
 vim.keymap.set('n', '<leader>pc', pack_clean, { desc = '[C]lean Vim [P]ack (remove unused plugins)' })
 vim.keymap.set('n', '<leader>pi', '<cmd>PasteImage<cr>', { desc = '[P]aste [I]mage from clipboard' })
 vim.keymap.set('n', '<leader>pl', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>', { desc = '[L]ive[P]review for current file' })
-vim.keymap.set('n', '<leader>pr', ':update<CR> :source<CR>', { desc = '[P]lease [R]eload nvim configuration' })
+vim.keymap.set('n', '<leader>pr', ':update<CR> :source ~/.config/nvim/init.lua<CR>', { desc = '[P]lease [R]eload nvim configuration' })
