@@ -21,9 +21,6 @@ alias vi="nvim"
 alias vim="nvim"
 alias im="nvim"
 
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && . "/opt/homebrew/opt/nvm/nvm.sh"
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && . "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
 eval "$(pyenv init -)"
 
 source "$SCRIPTS/git-prompt.sh"
@@ -33,8 +30,13 @@ PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
 export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
 # End of LM Studio CLI section
 
+# Added by nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# End of nvm section
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
