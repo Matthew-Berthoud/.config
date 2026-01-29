@@ -32,12 +32,6 @@ PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
 export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
 # End of LM Studio CLI section
 
-# Added by nvm
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# End of nvm section
-
 # Fast node manager (nvm alternative)
 eval "$(fnm env --use-on-cd --shell zsh)"
 
