@@ -21,6 +21,7 @@ alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
 alias im="nvim"
+alias wtf="npm -v && node -v && which npm && which node"
 
 eval "$(pyenv init -)"
 
