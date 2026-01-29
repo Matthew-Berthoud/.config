@@ -33,6 +33,30 @@
           "vertical" : 0
         }
       }
+    },
+    {
+      "if" : {
+        "device" : {
+          "category" : "mouse",
+          "productID" : "0x1b2e",
+          "productName" : "Corsair Gaming M65 Pro RGB Mouse",
+          "serialNumber" : "0802B03CAF1E19075A25BE8EF5001BC0",
+          "vendorID" : "0x1b1c"
+        }
+      },
+      "scrolling" : {
+        "modifiers" : {
+          "vertical" : {
+            "shift" : {
+              "scale" : 1,
+              "type" : "changeSpeed"
+            }
+          }
+        },
+        "reverse" : {
+          "vertical" : true
+        }
+      }
     }
   ]
 }
