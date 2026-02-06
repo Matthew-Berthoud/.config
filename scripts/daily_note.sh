@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 
-notes_dir="$HOME/Desktop/black-cape/notes/daily"
+all_notes="$HOME/Desktop/black-cape/notes"
+bank_note="$all_notes/bank.md"
+notes_dir="$all_notes/daily"
 mkdir -p "$notes_dir"
 
 todays_note_file="$notes_dir/$(date +'%Y-%m-%d').md"
@@ -29,9 +31,9 @@ if [ ! -f "$todays_note_file" ]; then
   fi
 fi
 
-# If a previous note exists, open side-by-side (-O) with today's note
+# If a previous note exists, open side-by-side with today's note
 if [ -n "$prev_note" ]; then
-  nvim -O "$todays_note_file" "$prev_note"
+  nvim -p "$todays_note_file" "$bank_note" -c "vsplit $prev_note"
 else
-  nvim "$todays_note_file"
+  nvim -p "$todays_note_file" "$bank_note"
 fi
