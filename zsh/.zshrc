@@ -9,7 +9,7 @@ setopt IGNORE_EOF
 setopt PROMPT_SUBST
 
 alias cssbattle="pbpaste | python $SCRIPTS/cssbattle_condenser.py | pbcopy"
-alias daily="$SCRIPTS/daily_note.sh"
+alias daily="$CONFIG/install.sh && $SCRIPTS/daily_note.sh"
 alias dockernuke="docker system prune --all --volumes --force"
 alias im="nvim"
 alias la="ls -lahG"
@@ -33,6 +33,9 @@ PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
 # End of LM Studio CLI section
+
+# Ruby version manager
+eval "$(rbenv init - zsh)"
 
 # Fast node manager (nvm alternative)
 eval "$(fnm env --use-on-cd --shell zsh)"

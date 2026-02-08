@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 CONFIG="$HOME/.config"
 
 ln -sf "$CONFIG/zsh/.zshrc" "$HOME/.zshrc"

@@ -44,7 +44,19 @@
           "vendorID" : "0x1b1c"
         }
       },
+      "pointer" : {
+        "acceleration" : "unset",
+        "disableAcceleration" : false,
+        "redirectsToScroll" : false,
+        "speed" : 0.1
+      },
       "scrolling" : {
+        "acceleration" : {
+          "vertical" : 1
+        },
+        "distance" : {
+          "vertical" : "auto"
+        },
         "modifiers" : {
           "vertical" : {
             "shift" : {
@@ -55,6 +67,9 @@
         },
         "reverse" : {
           "vertical" : true
+        },
+        "speed" : {
+          "vertical" : 25
         }
       }
     }
