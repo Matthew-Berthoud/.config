@@ -12,6 +12,10 @@
       "rev": "b6ddfb97b5600d99afe3452d707444afda658aca",
       "src": "https://github.com/HakonHarnes/img-clip.nvim"
     },
+    "lazydev.nvim": {
+      "rev": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
+      "src": "https://github.com/folke/lazydev.nvim"
+    },
     "live-preview.nvim": {
       "rev": "04c2cc92476d7b3882a0c7155bb13c4d7ee4bfbf",
       "src": "https://github.com/brianhuster/live-preview.nvim"
