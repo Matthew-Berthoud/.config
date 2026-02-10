@@ -108,7 +108,28 @@ vim.lsp.config('gopls', {
 vim.lsp.enable('gopls')
 
 require('nvim-treesitter').setup({
-  ensure_installed = {
+  install_dir = vim.fn.stdpath('data') .. '/site',
+})
+require('nvim-treesitter').install({
+  'lua',
+  'tsx',
+  'typescript',
+  'html',
+  'javascript',
+  'css',
+  'scss',
+  'python',
+  'go',
+  'swift',
+  'markdown',
+  'markdown_inline',
+  'zsh',
+  'bash',
+  'latex',
+  'yaml',
+})
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
     'lua',
     'tsx',
     'typescript',
@@ -126,9 +147,9 @@ require('nvim-treesitter').setup({
     'latex',
     'yaml',
   },
-  auto_install = true,
-  highlight = { enable = true },
-  indent = { enable = true, disable = { 'python' } },
+  callback = function()
+    vim.treesitter.start()
+  end,
 })
 
 require('autoclose').setup()
@@ -190,6 +211,7 @@ vim.o.softtabstop = 2
 vim.o.swapfile = false
 vim.o.tabstop = 2
 vim.o.undofile = true
+vim.o.winborder = 'rounded'
 
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
@@ -270,17 +292,6 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.shiftwidth = 4
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
-  end,
-})
-
-vim.api.nvim_create_autocmd('ColorScheme', {
-  callback = function()
-    vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { fg = '#e06c75', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { fg = '#e5c07b', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { fg = '#98c379', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.4.markdown', { fg = '#61afef', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.5.markdown', { fg = '#c678dd', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.6.markdown', { fg = '#56b6c2', bold = true })
   end,
 })
 
