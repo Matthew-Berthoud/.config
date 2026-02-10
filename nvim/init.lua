@@ -6,7 +6,7 @@ vim.pack.add({
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
-  -- { src = 'https://github.com/folke/ts-comments.nvim' },
+  { src = 'https://github.com/folke/ts-comments.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/gaoDean/autolist.nvim' },
   { src = 'https://github.com/hakonharnes/img-clip.nvim' },
@@ -111,49 +111,53 @@ vim.lsp.enable('pyright')
 vim.lsp.config('gopls', {
   cmd = { 'gopls' },
   capabilities = capabilities,
-  filetypes = { 'go', 'gomod', 'gowork' },
+  filetypes = { 'go', 'gomod' },
   root_markers = { 'go.work', 'go.mod', '.git' },
 })
 vim.lsp.enable('gopls')
 
-require('nvim-treesitter').setup()
+require('nvim-treesitter').setup({})
 require('nvim-treesitter').install({
-  'lua',
-  'tsx',
-  'jsx',
-  'typescript',
-  'javascript',
-  'html',
+  'bash',
   'css',
-  'scss',
-  'python',
   'go',
-  'swift',
+  'html',
+  'javascript',
+  'jsx',
+  'latex',
+  'lua',
   'markdown',
   'markdown_inline',
-  'bash',
-  'latex',
-  'yaml',
+  'python',
+  'scss',
   'sql',
+  'swift',
+  'tsx',
+  'typescript',
+  'yaml',
 })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
-    'lua',
-    'tsx',
-    'jsx',
-    'react',
-    'html',
+    'bash',
     'css',
-    'scss',
-    'python',
     'go',
-    'swift',
+    'html',
+    'javascript',
+    'javascriptreact',
+    'jsx',
+    'latex',
+    'lua',
     'markdown',
     'markdown_inline',
-    'bash',
-    'latex',
-    'yaml',
+    'python',
+    'react',
+    'scss',
     'sql',
+    'swift',
+    'tsx',
+    'typescript',
+    'typescriptreact',
+    'yaml',
   },
   callback = function()
     vim.treesitter.start()
@@ -166,6 +170,18 @@ require('nvim-surround').setup()
 require('mini.extra').setup()
 require('mini.pick').setup()
 require('ts_context_commentstring').setup()
+require('ts-comments').setup({
+  lang = {
+    tsx = {
+      'typescript',
+      'tsx',
+    },
+    jsx = {
+      'javascript',
+      'jsx',
+    },
+  },
+})
 vim.cmd('colorscheme vague')
 require('render-markdown').setup({
   heading = {
