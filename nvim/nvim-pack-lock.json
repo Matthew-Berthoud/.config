@@ -4,9 +4,17 @@
       "rev": "3f86702b54a861a17d7994b2e32a7c648cb12fb1",
       "src": "https://github.com/m4xshen/autoclose.nvim"
     },
+    "autolist.nvim": {
+      "rev": "5f70a5f99e96c8fe3069de042abd2a8ed2deb855",
+      "src": "https://github.com/gaoDean/autolist.nvim"
+    },
     "blink.cmp": {
       "rev": "f85eb6252f4c0212be15c6c4213e9af587574cbe",
       "src": "https://github.com/saghen/blink.cmp"
+    },
+    "bullets.vim": {
+      "rev": "89294b8930e660936374fb763ac48a1ac51dd29c",
+      "src": "https://github.com/bullets-vim/bullets.vim"
     },
     "conform.nvim": {
       "rev": "5420c4b5ea0aeb99c09cfbd4fd0b70d257b44f25",
@@ -32,10 +40,6 @@
       "rev": "9f80f04cf4732939514b304e7c9146b9dc8e54c3",
       "src": "https://github.com/nvim-mini/mini.basics"
     },
-    "mini.completion": {
-      "rev": "4d451f82f193f6751719935a63d16ccb79a76e0b",
-      "src": "https://github.com/nvim-mini/mini.completion"
-    },
     "mini.extra": {
       "rev": "673633b97b64292c82d473ea2bd31b767dbe3907",
       "src": "https://github.com/nvim-mini/mini.extra"
@@ -59,10 +63,6 @@
     "nvim-ts-autotag": {
       "rev": "8e1c0a389f20bf7f5b0dd0e00306c1247bda2595",
       "src": "https://github.com/windwp/nvim-ts-autotag"
-    },
-    "nvim-web-devicons": {
-      "rev": "6788013bb9cb784e606ada44206b0e755e4323d7",
-      "src": "https://github.com/nvim-tree/nvim-web-devicons"
     },
     "oil.nvim": {
       "rev": "634049414b9ba7b827f050dc5a873bf68944c640",

@@ -6,6 +6,7 @@ vim.pack.add({
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
+  { src = 'https://github.com/gaoDean/autolist.nvim' },
   { src = 'https://github.com/hakonharnes/img-clip.nvim' },
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
@@ -167,6 +168,7 @@ require('render-markdown').setup({
   completions = { lsp = { enabled = true } },
   code = { border = 'thin' },
 })
+require('autolist').setup()
 
 require('oil').setup({
   lsp_file_methods = {
@@ -220,6 +222,28 @@ vim.o.winborder = 'rounded'
 
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
+vim.keymap.set('i', '<tab>', '<cmd>AutolistTab<cr>')
+vim.keymap.set('i', '<s-tab>', '<cmd>AutolistShiftTab<cr>')
+-- vim.keymap.set("i", "<c-t>", "<c-t><cmd>AutolistRecalculate<cr>") -- an example of using <c-t> to indent
+vim.keymap.set('i', '<CR>', '<CR><cmd>AutolistNewBullet<cr>')
+vim.keymap.set('n', 'o', 'o<cmd>AutolistNewBullet<cr>')
+vim.keymap.set('n', 'O', 'O<cmd>AutolistNewBulletBefore<cr>')
+vim.keymap.set('n', '<CR>', '<cmd>AutolistToggleCheckbox<cr><CR>')
+vim.keymap.set('n', '<C-r>', '<cmd>AutolistRecalculate<cr>')
+
+-- cycle list types with dot-repeat
+vim.keymap.set('n', '<leader>cn', require('autolist').cycle_next_dr, { expr = true })
+vim.keymap.set('n', '<leader>cp', require('autolist').cycle_prev_dr, { expr = true })
+
+-- if you don't want dot-repeat
+-- vim.keymap.set("n", "<leader>cn", "<cmd>AutolistCycleNext<cr>")
+-- vim.keymap.set("n", "<leader>cp", "<cmd>AutolistCycleNext<cr>")
+
+-- functions to recalculate list on edit
+vim.keymap.set('n', '>>', '>><cmd>AutolistRecalculate<cr>')
+vim.keymap.set('n', '<<', '<<<cmd>AutolistRecalculate<cr>')
+vim.keymap.set('n', 'dd', 'dd<cmd>AutolistRecalculate<cr>')
+vim.keymap.set('v', 'd', 'd<cmd>AutolistRecalculate<cr>')
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set(
   'n',
