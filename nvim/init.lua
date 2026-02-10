@@ -1,11 +1,12 @@
 vim.loader.enable()
 
 vim.pack.add({
+  { src = 'https://github.com/JoosepAlviste/nvim-ts-context-commentstring' },
   { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
-  { src = 'https://github.com/folke/ts-comments.nvim' },
+  -- { src = 'https://github.com/folke/ts-comments.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/gaoDean/autolist.nvim' },
   { src = 'https://github.com/hakonharnes/img-clip.nvim' },
@@ -164,7 +165,7 @@ require('nvim-ts-autotag').setup()
 require('nvim-surround').setup()
 require('mini.extra').setup()
 require('mini.pick').setup()
-require('ts-comments').setup()
+require('ts_context_commentstring').setup()
 vim.cmd('colorscheme vague')
 require('render-markdown').setup({
   heading = {
