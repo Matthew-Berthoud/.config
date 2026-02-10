@@ -5,12 +5,14 @@ vim.pack.add({
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
+  { src = 'https://github.com/folke/ts-comments.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/gaoDean/autolist.nvim' },
   { src = 'https://github.com/hakonharnes/img-clip.nvim' },
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/m4xshen/autoclose.nvim' },
+  { src = 'https://github.com/nvim-lualine/lualine.nvim' },
   { src = 'https://github.com/nvim-mini/mini.basics' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
   { src = 'https://github.com/nvim-mini/mini.icons' },
@@ -29,6 +31,7 @@ mini_icons.mock_nvim_web_devicons()
 
 require('mini.basics').setup()
 require('lazydev').setup()
+require('lualine').setup()
 
 local blink = require('blink.cmp')
 blink.setup({
@@ -116,9 +119,10 @@ require('nvim-treesitter').setup()
 require('nvim-treesitter').install({
   'lua',
   'tsx',
+  'jsx',
   'typescript',
-  'html',
   'javascript',
+  'html',
   'css',
   'scss',
   'python',
@@ -135,9 +139,9 @@ vim.api.nvim_create_autocmd('FileType', {
   pattern = {
     'lua',
     'tsx',
-    'typescript',
+    'jsx',
+    'react',
     'html',
-    'javascript',
     'css',
     'scss',
     'python',
@@ -160,6 +164,7 @@ require('nvim-ts-autotag').setup()
 require('nvim-surround').setup()
 require('mini.extra').setup()
 require('mini.pick').setup()
+require('ts-comments').setup()
 vim.cmd('colorscheme vague')
 require('render-markdown').setup({
   heading = {

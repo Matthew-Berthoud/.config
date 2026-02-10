@@ -36,9 +36,17 @@
       "rev": "04c2cc92476d7b3882a0c7155bb13c4d7ee4bfbf",
       "src": "https://github.com/brianhuster/live-preview.nvim"
     },
+    "lualine.nvim": {
+      "rev": "47f91c416daef12db467145e16bed5bbfe00add8",
+      "src": "https://github.com/nvim-lualine/lualine.nvim"
+    },
     "mini.basics": {
       "rev": "9f80f04cf4732939514b304e7c9146b9dc8e54c3",
       "src": "https://github.com/nvim-mini/mini.basics"
+    },
+    "mini.comment": {
+      "rev": "a0c721115faff8d05505c0a12dab410084d9e536",
+      "src": "https://github.com/nvim-mini/mini.comment"
     },
     "mini.extra": {
       "rev": "673633b97b64292c82d473ea2bd31b767dbe3907",
@@ -71,6 +79,10 @@
     "render-markdown.nvim": {
       "rev": "48b4175dbca8439d30c1f52231cbe5a712c8f9d9",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+    },
+    "ts-comments.nvim": {
+      "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
+      "src": "https://github.com/folke/ts-comments.nvim"
     },
     "vague.nvim": {
       "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",
