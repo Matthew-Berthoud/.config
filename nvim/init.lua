@@ -1,4 +1,7 @@
+vim.loader.enable()
+
 vim.pack.add({
+  { src = 'https://github.com/m4xshen/autoclose.nvim' },
   { src = 'https://github.com/HakonHarnes/img-clip.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
@@ -74,6 +77,7 @@ vim.lsp.config('gopls', {
 })
 vim.lsp.enable('gopls')
 
+require('autoclose').setup()
 require('mini.pick').setup()
 require('mini.extra').setup()
 require('mini.icons').setup()
@@ -102,7 +106,7 @@ require('which-key').add({
   { 'gr', group = '[R]eferences' },
 })
 require('img-clip').setup()
-require('live-preview.config').set({
+require('live-preview').setup({
   picker = 'mini.pick',
 })
 require('mini.completion').setup({
