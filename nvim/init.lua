@@ -21,13 +21,24 @@ vim.lsp.config('lua_ls', {
   cmd = { 'lua-language-server' },
   filetypes = { 'lua' },
   root_markers = { '.git' },
-  settings = { Lua = { runtime = { version = 'LuaJIT' } } },
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
+      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+    },
+  },
 })
 vim.lsp.enable('lua_ls')
 
 vim.lsp.config('ts_ls', {
   cmd = { 'typescript-language-server', '--stdio' },
-  filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+  filetypes = {
+    'typescript',
+    'typescriptreact',
+    'javascript',
+    'javascriptreact',
+  },
   root_markers = { 'package.json', '.git' },
   single_file_support = true,
   init_options = {
@@ -91,7 +102,7 @@ require('which-key').add({
   { 'gr', group = '[R]eferences' },
 })
 require('img-clip').setup()
-require('live-preview').setup({
+require('live-preview.config').set({
   picker = 'mini.pick',
 })
 require('mini.completion').setup({
@@ -144,20 +155,85 @@ vim.opt.linebreak = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<c-\\>', ':TmuxNavigatePrevious<cr>', { desc = 'Move focus to previous nvim window or tmux pane' })
-vim.keymap.set('n', '<c-h>', ':TmuxNavigateLeft<cr>', { desc = 'Move focus to the left nvim window or tmux pane' })
-vim.keymap.set('n', '<c-j>', ':TmuxNavigateDown<cr>', { desc = 'Move focus to the lower nvim window or tmux pane' })
-vim.keymap.set('n', '<c-k>', ':TmuxNavigateUp<cr>', { desc = 'Move focus to the upper nvim window or tmux pane' })
-vim.keymap.set('n', '<c-l>', ':TmuxNavigateRight<cr>', { desc = 'Move focus to the right nvim window or tmux pane' })
-vim.keymap.set('n', '<leader><leader>', ':Pick buffers<CR>', { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>bd', ':bp | bd #<CR>', { desc = '[D]elete [B]uffer but preserve split' })
+vim.keymap.set(
+  'n',
+  '<c-\\>',
+  ':TmuxNavigatePrevious<cr>',
+  { desc = 'Move focus to previous nvim window or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<c-h>',
+  ':TmuxNavigateLeft<cr>',
+  { desc = 'Move focus to the left nvim window or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<c-j>',
+  ':TmuxNavigateDown<cr>',
+  { desc = 'Move focus to the lower nvim window or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<c-k>',
+  ':TmuxNavigateUp<cr>',
+  { desc = 'Move focus to the upper nvim window or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<c-l>',
+  ':TmuxNavigateRight<cr>',
+  { desc = 'Move focus to the right nvim window or tmux pane' }
+)
+vim.keymap.set(
+  'n',
+  '<leader><leader>',
+  ':Pick buffers<CR>',
+  { desc = '[ ] Find existing buffers' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>bd',
+  ':bp | bd #<CR>',
+  { desc = '[D]elete [B]uffer but preserve split' }
+)
 vim.keymap.set('n', '<leader>e', ':Oil<CR>', { desc = 'Open Oil [E]xplorer' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', 'grd', '<cmd>lua vim.lsp.buf.definition()<CR>', { desc = '[G]o to [D]efinition' })
+vim.keymap.set(
+  'n',
+  '<leader>q',
+  vim.diagnostic.setloclist,
+  { desc = 'Open diagnostic [Q]uickfix list' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sf',
+  ':Pick files<CR>',
+  { desc = '[S]earch [F]iles' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sg',
+  ':Pick grep_live<CR>',
+  { desc = '[S]earch by [G]rep' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sh',
+  ':Pick help<CR>',
+  { desc = '[S]earch [H]elp' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sr',
+  ':Pick resume<CR>',
+  { desc = '[S]earch [R]esume' }
+)
+vim.keymap.set(
+  'n',
+  'grd',
+  '<cmd>lua vim.lsp.buf.definition()<CR>',
+  { desc = '[G]o to [D]efinition' }
+)
 
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
@@ -185,13 +261,47 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = function()
-    -- You can set specific colors, or link them to existing groups like 'Title', 'Function', etc.
-    vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { fg = '#e06c75', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { fg = '#e5c07b', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { fg = '#98c379', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.4.markdown', { fg = '#61afef', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.5.markdown', { fg = '#c678dd', bold = true })
-    vim.api.nvim_set_hl(0, '@markup.heading.6.markdown', { fg = '#56b6c2', bold = true })
+    vim.api.nvim_set_hl(
+      0,
+      '@markup.heading.1.markdown',
+      { fg = '#e06c75', bold = true }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      '@markup.heading.2.markdown',
+      { fg = '#e5c07b', bold = true }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      '@markup.heading.3.markdown',
+      { fg = '#98c379', bold = true }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      '@markup.heading.4.markdown',
+      { fg = '#61afef', bold = true }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      '@markup.heading.5.markdown',
+      { fg = '#c678dd', bold = true }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      '@markup.heading.6.markdown',
+      { fg = '#56b6c2', bold = true }
+    )
+  end,
+})
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking (copying) text',
+  group = vim.api.nvim_create_augroup(
+    'kickstart-highlight-yank',
+    { clear = true }
+  ),
+  callback = function()
+    vim.hl.on_yank()
   end,
 })
 
@@ -237,7 +347,6 @@ require('gitsigns').setup({
       vim.keymap.set(mode, l, r, opts)
     end
 
-    -- Navigation
     map('n', ']c', function()
       if vim.wo.diff then
         vim.cmd.normal({ ']c', bang = true })
@@ -254,37 +363,60 @@ require('gitsigns').setup({
       end
     end, { desc = 'Jump to previous git [c]hange' })
 
-    -- Actions
-    -- visual mode
     map('v', '<leader>hs', function()
       gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
     end, { desc = 'git [s]tage hunk' })
     map('v', '<leader>hr', function()
       gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
     end, { desc = 'git [r]eset hunk' })
-    -- normal mode
     map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
     map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
-    map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-    map('n', '<leader>hu', gitsigns.stage_hunk, { desc = 'git [u]ndo stage hunk' })
-    map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
-    map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
+    map(
+      'n',
+      '<leader>hS',
+      gitsigns.stage_buffer,
+      { desc = 'git [S]tage buffer' }
+    )
+    map(
+      'n',
+      '<leader>hu',
+      gitsigns.stage_hunk,
+      { desc = 'git [u]ndo stage hunk' }
+    )
+    map(
+      'n',
+      '<leader>hR',
+      gitsigns.reset_buffer,
+      { desc = 'git [R]eset buffer' }
+    )
+    map(
+      'n',
+      '<leader>hp',
+      gitsigns.preview_hunk,
+      { desc = 'git [p]review hunk' }
+    )
     map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-    map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
+    map(
+      'n',
+      '<leader>hd',
+      gitsigns.diffthis,
+      { desc = 'git [d]iff against index' }
+    )
     map('n', '<leader>hD', function()
       gitsigns.diffthis('@')
     end, { desc = 'git [D]iff against last commit' })
-    -- Toggles
-    map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
-    map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
-  end,
-})
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.hl.on_yank()
+    map(
+      'n',
+      '<leader>tb',
+      gitsigns.toggle_current_line_blame,
+      { desc = '[T]oggle git show [b]lame line' }
+    )
+    map(
+      'n',
+      '<leader>tD',
+      gitsigns.preview_hunk_inline,
+      { desc = '[T]oggle git show [D]eleted' }
+    )
   end,
 })
 
@@ -313,7 +445,27 @@ local function pack_clean()
   end
 end
 
-vim.keymap.set('n', '<leader>pc', pack_clean, { desc = '[C]lean Vim [P]ack (remove unused plugins)' })
-vim.keymap.set('n', '<leader>pi', '<cmd>PasteImage<cr>', { desc = '[P]aste [I]mage from clipboard' })
-vim.keymap.set('n', '<leader>pl', '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>', { desc = '[L]ive[P]review for current file' })
-vim.keymap.set('n', '<leader>pr', ':update<CR> :source ~/.config/nvim/init.lua<CR>', { desc = '[P]lease [R]eload nvim configuration' })
+vim.keymap.set(
+  'n',
+  '<leader>pc',
+  pack_clean,
+  { desc = '[C]lean Vim [P]ack (remove unused plugins)' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>pi',
+  '<cmd>PasteImage<cr>',
+  { desc = '[P]aste [I]mage from clipboard' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>pl',
+  '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>',
+  { desc = '[L]ive[P]review for current file' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>pr',
+  ':update<CR> :source ~/.config/nvim/init.lua<CR>',
+  { desc = '[P]lease [R]eload nvim configuration' }
+)
