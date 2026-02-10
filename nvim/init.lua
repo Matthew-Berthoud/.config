@@ -365,6 +365,17 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  -- wrap text in non-code situations
+  pattern = { 'text', 'markdown', 'gitcommit', 'qf' },
+  callback = function()
+    vim.wo.wrap = true
+    vim.wo.linebreak = true
+    vim.wo.breakindent = true
+    vim.wo.showbreak = '↳ '
+  end,
+})
+
 require('conform').setup({
   format_on_save = function()
     return {
