@@ -490,3 +490,53 @@ vim.keymap.set(
   ':update<CR> :source ~/.config/nvim/init.lua<CR>',
   { desc = '[P]lease [R]eload nvim configuration' }
 )
+
+-- Force save all buffers after an LSP rename
+-- Place this at the end of your init.lua
+vim.lsp.handlers['textDocument/rename'] = function(err, result, ctx)
+  -- 1. Error handling
+  if err then
+    vim.notify('Rename error: ' .. err.message, vim.log.levels.ERROR)
+    return
+  end
+  if not result then
+    return
+  end
+
+  -- 2. Apply the edits (standard Neovim behavior)
+  local client = vim.lsp.get_client_by_id(ctx.client_id)
+  vim.lsp.util.apply_workspace_edit(result, client.offset_encoding)
+
+  -- 3. Identify all affected files and save them
+  local uris = {}
+
+  -- Gather URIs from standard 'changes' map
+  if result.changes then
+    for uri, _ in pairs(result.changes) do
+      table.insert(uris, uri)
+    end
+  end
+
+  -- Gather URIs from 'documentChanges' (used by some LSPs)
+  if result.documentChanges then
+    for _, change in ipairs(result.documentChanges) do
+      if change.textDocument then
+        table.insert(uris, change.textDocument.uri)
+      end
+    end
+  end
+
+  -- 4. Loop through files and force save
+  for _, uri in ipairs(uris) do
+    local bufnr = vim.uri_to_bufnr(uri)
+    -- If the buffer is valid (loaded by the edit), save it
+    if vim.api.nvim_buf_is_valid(bufnr) then
+      vim.api.nvim_buf_call(bufnr, function()
+        vim.cmd('update')
+      end)
+    end
+  end
+
+  -- Optional: Notify the user
+  vim.notify('Renamed and saved ' .. #uris .. ' file(s).', vim.log.levels.INFO)
+end
