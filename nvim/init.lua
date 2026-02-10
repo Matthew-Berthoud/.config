@@ -289,7 +289,7 @@ vim.keymap.set(
   vim.diagnostic.setloclist,
   { desc = 'Open diagnostic [Q]uickfix list' }
 )
-vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sf', ':Pick git_files<CR>', { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
