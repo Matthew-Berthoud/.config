@@ -10,6 +10,3 @@ ln -sf "$CONFIG/git/.gitconfig" "$HOME/.gitconfig"
 ln -sf "$CONFIG/git/.gitconfig-work" "$HOME/.gitconfig-work"
 
 brew bundle --clean
-
-source "$SCRIPTS/fnm_npm.sh"
-source "$SCRIPTS/rustup_cargo_rust.sh"
