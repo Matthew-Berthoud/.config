@@ -31,7 +31,11 @@ require('lazydev').setup()
 
 local blink = require('blink.cmp')
 blink.setup({
-  keymap = { preset = 'default' },
+  keymap = {
+    preset = 'default',
+    ['<C-n>'] = { 'show', 'select_next', 'fallback' },
+    ['<C-p>'] = { 'show', 'select_prev', 'fallback' },
+  },
   appearance = {
     use_nvim_cmp_as_default = true,
     nerd_font_variant = 'mono',
@@ -128,7 +132,22 @@ require('nvim-treesitter').install({
 })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
-    '*',
+    'lua',
+    'tsx',
+    'typescript',
+    'html',
+    'javascript',
+    'css',
+    'scss',
+    'python',
+    'go',
+    'swift',
+    'markdown',
+    'markdown_inline',
+    'bash',
+    'latex',
+    'yaml',
+    'sql',
   },
   callback = function()
     vim.treesitter.start()
@@ -140,9 +159,13 @@ require('nvim-ts-autotag').setup()
 require('nvim-surround').setup()
 require('mini.extra').setup()
 require('mini.pick').setup()
+vim.cmd('colorscheme vague')
 require('render-markdown').setup({
+  heading = {
+    backgrounds = { '', '', '', '', '', '' },
+  },
   completions = { lsp = { enabled = true } },
-  code = { border = 'thin', style = 'language' },
+  code = { border = 'thin' },
 })
 
 require('oil').setup({
@@ -174,7 +197,6 @@ require('live-preview').setup({
   picker = 'mini.pick',
 })
 
-vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
 
 vim.g.loaded_node_provider = 0
@@ -275,6 +297,16 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.shiftwidth = 4
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
+  end,
+})
+
+vim.api.nvim_create_autocmd('FileType', {
+  -- have to re-enforce these since neovim reeeeally wants you using 4 space indent for markdown
+  pattern = 'markdown',
+  callback = function()
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
   end,
 })
 
