@@ -9,16 +9,19 @@ vim.pack.add({
   { src = 'https://github.com/kylechui/nvim-surround' }, -- `cs"` will put you in the position to change the surrounding double quotes, for example
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/m4xshen/autoclose.nvim' },
+  { src = 'https://github.com/nvim-mini/mini.basics' },
   { src = 'https://github.com/nvim-mini/mini.completion' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
   { src = 'https://github.com/nvim-mini/mini.icons' },
   { src = 'https://github.com/nvim-mini/mini.pick' },
   { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
+  { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
   { src = 'https://github.com/windwp/nvim-ts-autotag' },
 })
+require('mini.basics').setup()
 
 require('lazydev').setup()
 
@@ -79,12 +82,30 @@ vim.lsp.config('gopls', {
 })
 vim.lsp.enable('gopls')
 
+require('nvim-treesitter').setup({
+  ensure_installed = {
+    'lua',
+    'tsx',
+    'typescript',
+    'html',
+    'javascript',
+    'css',
+    'scss',
+    'python',
+    'go',
+    'swift',
+  },
+  auto_install = true,
+  highlight = { enable = true },
+  indent = { enable = true, disable = { 'python' } },
+})
 require('autoclose').setup()
-require('nvim-ts-autotag').setup() -- TODO tresitter
+require('nvim-ts-autotag').setup()
 require('nvim-surround').setup()
-require('mini.pick').setup()
+
 require('mini.extra').setup()
 require('mini.icons').setup()
+require('mini.pick').setup()
 require('nvim-web-devicons').setup()
 require('oil').setup({
   lsp_file_methods = {
@@ -127,39 +148,24 @@ require('mini.completion').setup({
 vim.cmd('colorscheme vague')
 vim.cmd(':hi statusline guibg=NONE')
 
-vim.g.mapleader = ' '
 vim.g.loaded_node_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 vim.o.confirm = true
-vim.o.cursorcolumn = false
-vim.o.cursorline = true
 vim.o.expandtab = true
-vim.o.ignorecase = true
 vim.o.inccommand = 'split'
 vim.o.list = true
 vim.o.mouse = 'a'
-vim.o.number = true
 vim.o.relativenumber = true
 vim.o.shiftwidth = 2
-vim.o.showmode = false
 vim.o.showtabline = 2
-vim.o.signcolumn = 'yes'
-vim.o.smartcase = true
-vim.o.smartindent = true
 vim.o.softtabstop = 2
-vim.o.splitbelow = true
-vim.o.splitright = true
 vim.o.swapfile = false
 vim.o.tabstop = 2
-vim.o.termguicolors = true
 vim.o.undofile = true
-vim.o.winborder = 'rounded'
-vim.o.breakindent = true
 
-vim.opt.linebreak = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -193,12 +199,7 @@ vim.keymap.set(
   ':TmuxNavigateRight<cr>',
   { desc = 'Move focus to the right nvim window or tmux pane' }
 )
-vim.keymap.set(
-  'n',
-  '<leader><leader>',
-  ':Pick buffers<CR>',
-  { desc = '[ ] Find existing buffers' }
-)
+vim.keymap.set('n', '<leader><leader>', ':Pick buffers<CR>', { desc = '[ ] Find existing buffers' })
 vim.keymap.set(
   'n',
   '<leader>bd',
@@ -212,30 +213,10 @@ vim.keymap.set(
   vim.diagnostic.setloclist,
   { desc = 'Open diagnostic [Q]uickfix list' }
 )
-vim.keymap.set(
-  'n',
-  '<leader>sf',
-  ':Pick files<CR>',
-  { desc = '[S]earch [F]iles' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>sg',
-  ':Pick grep_live<CR>',
-  { desc = '[S]earch by [G]rep' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>sh',
-  ':Pick help<CR>',
-  { desc = '[S]earch [H]elp' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>sr',
-  ':Pick resume<CR>',
-  { desc = '[S]earch [R]esume' }
-)
+vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
 vim.keymap.set(
   'n',
   'grd',
@@ -269,47 +250,12 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.api.nvim_create_autocmd('ColorScheme', {
   callback = function()
-    vim.api.nvim_set_hl(
-      0,
-      '@markup.heading.1.markdown',
-      { fg = '#e06c75', bold = true }
-    )
-    vim.api.nvim_set_hl(
-      0,
-      '@markup.heading.2.markdown',
-      { fg = '#e5c07b', bold = true }
-    )
-    vim.api.nvim_set_hl(
-      0,
-      '@markup.heading.3.markdown',
-      { fg = '#98c379', bold = true }
-    )
-    vim.api.nvim_set_hl(
-      0,
-      '@markup.heading.4.markdown',
-      { fg = '#61afef', bold = true }
-    )
-    vim.api.nvim_set_hl(
-      0,
-      '@markup.heading.5.markdown',
-      { fg = '#c678dd', bold = true }
-    )
-    vim.api.nvim_set_hl(
-      0,
-      '@markup.heading.6.markdown',
-      { fg = '#56b6c2', bold = true }
-    )
-  end,
-})
-
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup(
-    'kickstart-highlight-yank',
-    { clear = true }
-  ),
-  callback = function()
-    vim.hl.on_yank()
+    vim.api.nvim_set_hl(0, '@markup.heading.1.markdown', { fg = '#e06c75', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.2.markdown', { fg = '#e5c07b', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.3.markdown', { fg = '#98c379', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.4.markdown', { fg = '#61afef', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.5.markdown', { fg = '#c678dd', bold = true })
+    vim.api.nvim_set_hl(0, '@markup.heading.6.markdown', { fg = '#56b6c2', bold = true })
   end,
 })
 
@@ -379,37 +325,12 @@ require('gitsigns').setup({
     end, { desc = 'git [r]eset hunk' })
     map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'git [s]tage hunk' })
     map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'git [r]eset hunk' })
-    map(
-      'n',
-      '<leader>hS',
-      gitsigns.stage_buffer,
-      { desc = 'git [S]tage buffer' }
-    )
-    map(
-      'n',
-      '<leader>hu',
-      gitsigns.stage_hunk,
-      { desc = 'git [u]ndo stage hunk' }
-    )
-    map(
-      'n',
-      '<leader>hR',
-      gitsigns.reset_buffer,
-      { desc = 'git [R]eset buffer' }
-    )
-    map(
-      'n',
-      '<leader>hp',
-      gitsigns.preview_hunk,
-      { desc = 'git [p]review hunk' }
-    )
+    map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
+    map('n', '<leader>hu', gitsigns.stage_hunk, { desc = 'git [u]ndo stage hunk' })
+    map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
+    map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
     map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
-    map(
-      'n',
-      '<leader>hd',
-      gitsigns.diffthis,
-      { desc = 'git [d]iff against index' }
-    )
+    map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
     map('n', '<leader>hD', function()
       gitsigns.diffthis('@')
     end, { desc = 'git [D]iff against last commit' })
@@ -419,12 +340,7 @@ require('gitsigns').setup({
       gitsigns.toggle_current_line_blame,
       { desc = '[T]oggle git show [b]lame line' }
     )
-    map(
-      'n',
-      '<leader>tD',
-      gitsigns.preview_hunk_inline,
-      { desc = '[T]oggle git show [D]eleted' }
-    )
+    map('n', '<leader>tD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
   end,
 })
 
