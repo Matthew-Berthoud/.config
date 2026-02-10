@@ -107,9 +107,7 @@ vim.lsp.config('gopls', {
 })
 vim.lsp.enable('gopls')
 
-require('nvim-treesitter').setup({
-  install_dir = vim.fn.stdpath('data') .. '/site',
-})
+require('nvim-treesitter').setup()
 require('nvim-treesitter').install({
   'lua',
   'tsx',
@@ -123,29 +121,14 @@ require('nvim-treesitter').install({
   'swift',
   'markdown',
   'markdown_inline',
-  'zsh',
   'bash',
   'latex',
   'yaml',
+  'sql',
 })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
-    'lua',
-    'tsx',
-    'typescript',
-    'html',
-    'javascript',
-    'css',
-    'scss',
-    'python',
-    'go',
-    'swift',
-    'markdown',
-    'markdown_inline',
-    'zsh',
-    'bash',
-    'latex',
-    'yaml',
+    '*',
   },
   callback = function()
     vim.treesitter.start()
@@ -159,7 +142,7 @@ require('mini.extra').setup()
 require('mini.pick').setup()
 require('render-markdown').setup({
   completions = { lsp = { enabled = true } },
-  code = { border = 'thin' },
+  code = { border = 'thin', style = 'language' },
 })
 
 require('oil').setup({
