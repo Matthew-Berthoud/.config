@@ -32,7 +32,12 @@ mini_icons.mock_nvim_web_devicons()
 
 require('mini.basics').setup()
 require('lazydev').setup()
-require('lualine').setup()
+require('lualine').setup({
+  sections = {
+    lualine_a = { 'filename' },
+    lualine_c = {},
+  },
+})
 
 local blink = require('blink.cmp')
 blink.setup({
