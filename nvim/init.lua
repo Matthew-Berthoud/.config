@@ -1,32 +1,54 @@
 vim.loader.enable()
 
 vim.pack.add({
-  { src = 'https://github.com/HakonHarnes/img-clip.nvim' },
+  { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
-  { src = 'https://github.com/kylechui/nvim-surround' }, -- `cs"` will put you in the position to change the surrounding double quotes, for example
+  { src = 'https://github.com/hakonharnes/img-clip.nvim' },
+  { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/m4xshen/autoclose.nvim' },
   { src = 'https://github.com/nvim-mini/mini.basics' },
-  { src = 'https://github.com/nvim-mini/mini.completion' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
   { src = 'https://github.com/nvim-mini/mini.icons' },
   { src = 'https://github.com/nvim-mini/mini.pick' },
-  { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
   { src = 'https://github.com/nvim-treesitter/nvim-treesitter' },
+  { src = 'https://github.com/saghen/blink.cmp' },
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
   { src = 'https://github.com/windwp/nvim-ts-autotag' },
 })
-require('mini.basics').setup()
 
+local mini_icons = require('mini.icons')
+mini_icons.setup()
+mini_icons.mock_nvim_web_devicons()
+
+require('mini.basics').setup()
 require('lazydev').setup()
+
+local blink = require('blink.cmp')
+blink.setup({
+  keymap = { preset = 'default' },
+  appearance = {
+    use_nvim_cmp_as_default = true,
+    nerd_font_variant = 'mono',
+  },
+  fuzzy = {
+    implementation = 'lua',
+  },
+  sources = {
+    default = { 'lsp', 'path', 'snippets', 'buffer' },
+  },
+  signature = { enabled = true },
+})
+local capabilities = blink.get_lsp_capabilities()
 
 vim.lsp.config('lua_ls', {
   cmd = { 'lua-language-server' },
+  capabilities = capabilities,
   filetypes = { 'lua' },
   root_markers = { '.git' },
   settings = {
@@ -41,6 +63,7 @@ vim.lsp.enable('lua_ls')
 
 vim.lsp.config('ts_ls', {
   cmd = { 'typescript-language-server', '--stdio' },
+  capabilities = capabilities,
   filetypes = {
     'typescript',
     'typescriptreact',
@@ -61,6 +84,7 @@ vim.lsp.enable('ts_ls')
 
 vim.lsp.config('pyright', {
   cmd = { 'pyright-langserver', '--stdio' },
+  capabilities = capabilities,
   filetypes = { 'python' },
   root_markers = { 'pyproject.toml', 'setup.py', 'requirements.txt', '.git' },
   settings = {
@@ -77,6 +101,7 @@ vim.lsp.enable('pyright')
 
 vim.lsp.config('gopls', {
   cmd = { 'gopls' },
+  capabilities = capabilities,
   filetypes = { 'go', 'gomod', 'gowork' },
   root_markers = { 'go.work', 'go.mod', '.git' },
 })
@@ -94,19 +119,28 @@ require('nvim-treesitter').setup({
     'python',
     'go',
     'swift',
+    'markdown',
+    'markdown_inline',
+    'zsh',
+    'bash',
+    'latex',
+    'yaml',
   },
   auto_install = true,
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
 })
+
 require('autoclose').setup()
 require('nvim-ts-autotag').setup()
 require('nvim-surround').setup()
-
 require('mini.extra').setup()
-require('mini.icons').setup()
 require('mini.pick').setup()
-require('nvim-web-devicons').setup()
+require('render-markdown').setup({
+  completions = { lsp = { enabled = true } },
+  code = { border = 'thin' },
+})
+
 require('oil').setup({
   lsp_file_methods = {
     enabled = true,
@@ -123,6 +157,7 @@ require('oil').setup({
     'mtime',
   },
 })
+
 require('which-key').setup()
 require('which-key').add({
   { '<leader>s', group = '[S]earch' },
@@ -133,16 +168,6 @@ require('which-key').add({
 require('img-clip').setup()
 require('live-preview').setup({
   picker = 'mini.pick',
-})
-require('mini.completion').setup({
-  lsp_completion = {
-    source_func = 'omnifunc',
-    auto_setup = false,
-  },
-  window = {
-    info = { border = 'rounded' },
-    signature = { border = 'rounded' },
-  },
 })
 
 vim.cmd('colorscheme vague')
