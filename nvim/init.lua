@@ -164,7 +164,9 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
-require('autoclose').setup()
+require('autoclose').setup({
+  options = { disabled_filetypes = { 'text', 'markdown', 'gitcommit' } },
+})
 require('nvim-ts-autotag').setup()
 require('nvim-surround').setup()
 require('mini.extra').setup()
