@@ -1,13 +1,14 @@
 vim.loader.enable()
 
 vim.pack.add({
-  { src = 'https://github.com/m4xshen/autoclose.nvim' },
   { src = 'https://github.com/HakonHarnes/img-clip.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
+  { src = 'https://github.com/kylechui/nvim-surround' }, -- `cs"` will put you in the position to change the surrounding double quotes, for example
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
+  { src = 'https://github.com/m4xshen/autoclose.nvim' },
   { src = 'https://github.com/nvim-mini/mini.completion' },
   { src = 'https://github.com/nvim-mini/mini.extra' },
   { src = 'https://github.com/nvim-mini/mini.icons' },
@@ -16,6 +17,7 @@ vim.pack.add({
   { src = 'https://github.com/stevearc/conform.nvim' },
   { src = 'https://github.com/stevearc/oil.nvim' },
   { src = 'https://github.com/vague2k/vague.nvim' },
+  { src = 'https://github.com/windwp/nvim-ts-autotag' },
 })
 
 require('lazydev').setup()
@@ -78,6 +80,8 @@ vim.lsp.config('gopls', {
 vim.lsp.enable('gopls')
 
 require('autoclose').setup()
+require('nvim-ts-autotag').setup() -- TODO tresitter
+require('nvim-surround').setup()
 require('mini.pick').setup()
 require('mini.extra').setup()
 require('mini.icons').setup()
