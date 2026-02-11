@@ -26,6 +26,26 @@ vim.pack.add({
   { src = 'https://github.com/windwp/nvim-ts-autotag' },
 })
 
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.markdown_recommended_style = 0
+vim.o.confirm = true
+vim.o.expandtab = true
+vim.o.inccommand = 'split'
+vim.o.list = true
+vim.o.mouse = 'a'
+vim.o.relativenumber = true
+vim.o.shiftwidth = 2
+vim.o.showtabline = 2
+vim.o.softtabstop = 2
+vim.o.swapfile = false
+vim.o.tabstop = 2
+vim.o.undofile = true
+vim.o.winborder = 'rounded'
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
 local mini_icons = require('mini.icons')
 mini_icons.setup()
 mini_icons.mock_nvim_web_devicons()
@@ -229,27 +249,6 @@ require('live-preview').setup({
 
 vim.cmd(':hi statusline guibg=NONE')
 
-vim.g.loaded_node_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_ruby_provider = 0
-
-vim.o.confirm = true
-vim.o.expandtab = true
-vim.o.inccommand = 'split'
-vim.o.list = true
-vim.o.mouse = 'a'
-vim.o.relativenumber = true
-vim.o.shiftwidth = 2
-vim.o.showtabline = 2
-vim.o.softtabstop = 2
-vim.o.swapfile = false
-vim.o.tabstop = 2
-vim.o.undofile = true
-vim.o.winborder = 'rounded'
-
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'markdown', 'text', 'tex', 'plaintex', 'norg' },
   callback = function()
@@ -357,16 +356,6 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.opt_local.shiftwidth = 4
     vim.opt_local.tabstop = 4
     vim.opt_local.softtabstop = 4
-  end,
-})
-
-vim.api.nvim_create_autocmd('FileType', {
-  -- have to re-enforce these since neovim reeeeally wants you using 4 space indent for markdown
-  pattern = 'markdown',
-  callback = function()
-    vim.opt_local.shiftwidth = 2
-    vim.opt_local.tabstop = 2
-    vim.opt_local.softtabstop = 2
   end,
 })
 
