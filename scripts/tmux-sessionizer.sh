@@ -7,8 +7,7 @@ else
   personal_repos=(${repos_dirs:#*/black-cape})
   work_repos=($WORK_REPOS/*/*(N/D))
   config="$HOME/.config"
-  notes="$HOME/Desktop/black-cape/notes" 
-  selected=$(print -l $config $notes $work_repos $personal_repos | fzf --delimiter / --with-nth -1)
+  selected=$(print -l $config $work_repos $personal_repos | fzf --delimiter / --with-nth -1)
 fi
 
 if [[ -z $selected ]]; then
