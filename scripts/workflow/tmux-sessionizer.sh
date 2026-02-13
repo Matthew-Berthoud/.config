@@ -37,7 +37,7 @@ if ! tmux has-session -t="$session_name" 2>/dev/null; then
   if [[ $directory == $CONFIG ]]; then
     tmux send-keys -t ${session_name}:notes "cd $NOTES/config" C-m
   else
-    tmux send-keys -t ${session_name}:notes "cd $NOTES/$relative_path" C-m
+    tmux send-keys -t ${session_name}:notes "mkdir -p $NOTES/$relative_path && cd $NOTES/$relative_path" C-m
   fi
 
   tmux select-window -t ${session_name}:terminal

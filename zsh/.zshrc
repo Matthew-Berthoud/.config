@@ -9,7 +9,7 @@ setopt IGNORE_EOF
 setopt PROMPT_SUBST
 
 alias cssbattle="pbpaste | python $SCRIPTS/cssbattle_condenser.py | pbcopy"
-alias daily="$CONFIG/install.sh && $WORKFLOW/open_daily_note.sh"
+alias daily="$WORKFLOW/open_daily_note.sh"
 alias dockernuke="docker system prune --all --volumes --force"
 alias im="nvim"
 alias la="ls -lahG"
@@ -18,6 +18,9 @@ alias ls="ls -G"
 alias mc="$SCRIPTS/toggle_minecraft_keybinds.sh"
 alias so="source $CONFIG/zsh/.zshenv && source $CONFIG/zsh/.zprofile && source $CONFIG/zsh/.zshrc"
 alias treedme='tree -a --gitignore --dirsfirst -I ".git/" --noreport | pbcopy'
+alias v="nvim"
+alias vi="nvim"
+alias vim="nvim"
 alias wtf="npm -v && node -v && which npm && which node"
 
 eval "$(pyenv init -)"
