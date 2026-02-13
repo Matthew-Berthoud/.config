@@ -23,7 +23,6 @@ fi
 if ! tmux has-session -t="$session_name" 2>/dev/null; then
   tmux new-session -ds "$session_name" -n "editor" -c "$directory"
   tmux send-keys -t ${session_name}:editor "cd $directory" C-m
-  tmux send-keys -t ${session_name}:editor "nvim ." C-m
 
   tmux new-window -t $session_name -n "terminal" -c "$directory"
   tmux send-keys -t ${session_name}:terminal "git status" C-m
@@ -40,8 +39,7 @@ if ! tmux has-session -t="$session_name" 2>/dev/null; then
   else
     tmux send-keys -t ${session_name}:notes "cd $NOTES/$relative_path" C-m
   fi
-  # tmux send-keys -t ${session_name}:notes "daily" C-m
-  #
+
   tmux select-window -t ${session_name}:terminal
 fi
 
