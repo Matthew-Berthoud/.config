@@ -141,6 +141,19 @@ vim.lsp.config('gopls', {
 })
 vim.lsp.enable('gopls')
 
+vim.lsp.config('bashls', {
+  cmd = { 'bash-language-server', 'start' },
+  capabilities = capabilities,
+  filetypes = { 'sh', 'bash', 'zsh' },
+  root_markers = { '.git', '.bashrc', '.zshrc' },
+  settings = {
+    bashIde = {
+      globPattern = '**/*@(.sh|.inc|.bash|.command|.zsh)',
+    },
+  },
+})
+vim.lsp.enable('bashls')
+
 require('nvim-treesitter').setup({})
 require('nvim-treesitter').install({
   'bash',
@@ -393,6 +406,15 @@ require('conform').setup({
     graphql = { 'prettierd' },
     python = { 'ruff_organize_imports', 'ruff_fix', 'ruff_format' },
     lua = { 'stylua' },
+    sh = { 'shfmt' },
+    bash = { 'shfmt' },
+    zsh = { 'shfmt' },
+  },
+  formatters = {
+    shfmt = {
+      -- prepends these args to the command
+      prepend_args = { '-i', '2' }, -- indent with 2 spaces
+    },
   },
 })
 
