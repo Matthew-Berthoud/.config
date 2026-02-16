@@ -11,6 +11,7 @@ setopt PROMPT_SUBST
 alias cssbattle="pbpaste | python $SCRIPTS/cssbattle_condenser.py | pbcopy"
 alias daily="$WORKFLOW/open_daily_note.sh"
 alias dockernuke="docker system prune --all --volumes --force"
+alias dotsync="zsh $SCRIPTS/sync.sh"
 alias im="nvim"
 alias la="ls -lahG"
 alias love="/Applications/love.app/Contents/MacOS/love"
@@ -27,6 +28,22 @@ eval "$(pyenv init -)"
 
 source "$SCRIPTS/git-prompt.sh"
 PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
+
+# ZSH autocomplete stuff
+autoload -U compinit
+compinit
+source $(brew --prefix)/share/fzf-tab/fzf-tab.zsh
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' fzf-flags \
+  --bind 'ctrl-p:up' \
+  --bind 'ctrl-n:down' \
+  --bind 'ctrl-y:accept' \
+  --preview 'ls -1 --color=always $realpath' # Optional: Shows file previews
+bindkey -M viins '^N' fzf-tab-complete       # Ctrl+N opens the menu
+bindkey -M viins '^P' fzf-tab-complete       # Ctrl+P opens the menu (same as Tab)
+bindkey -M viins '^Y' accept-line            # Ctrl+Y accepts the line (optional, keeps consistency)
+
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
