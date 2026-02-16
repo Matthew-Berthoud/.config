@@ -173,6 +173,7 @@ require('nvim-treesitter').install({
   'tsx',
   'typescript',
   'yaml',
+  'zsh',
 })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = {
