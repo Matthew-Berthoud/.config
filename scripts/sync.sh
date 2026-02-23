@@ -27,4 +27,14 @@ for script in "$V_MANAGERS"/*.sh; do
   zsh "$script"
 done
 
+# 3. MacOS Defaults
+echo "${BLUE}Configuring MacOS settings...${NC}"
+
+# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
+defaults write com.apple.dock expose-group-apps -bool true && killall Dock
+# https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
+defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
+
+echo "${GREEN}Configured!${NC}"
+
 echo "${BLUE}Sync complete!${NC}"
