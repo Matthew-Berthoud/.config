@@ -164,15 +164,15 @@ on-mode-changed = []
 
 [[on-window-detected]]
     if.app-id = 'com.mitchellh.ghostty'
-    run = 'move-node-to-workspace T' # mnemonics T - Terminal/Tmux
+    run = ['layout h_accordion', 'move-node-to-workspace T'] # mnemonics T - Terminal/Tmux
 
 [[on-window-detected]]
     if.app-id = 'com.google.Chrome'
-    run = 'move-node-to-workspace W' # mnemonics W - Web browser
+    run = ['layout h_accordion', 'move-node-to-workspace W'] # mnemonics W - Web browser
 
 [[on-window-detected]]
     if.app-name-regex-substring = '^(?!(?:Ghostty|Chrome)$).*$'
-    run = 'move-node-to-workspace M' # mnemonics M - Main
+    run = ['layout h_accordion', 'move-node-to-workspace M'] # mnemonics M - Main
 
 [workspace-to-monitor-force-assignment]
     T = '(sceptre.*1)|(work-monitor-name-tbd)'
