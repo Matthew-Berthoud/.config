@@ -369,7 +369,7 @@ require('conform').setup({
     javascript = { 'prettierd' },
     javascriptreact = { 'prettierd' },
     typescript = { 'prettierd' },
-    -- typescriptreact = { 'prettierd' },
+    typescriptreact = { 'prettierd' },
     vue = { 'prettierd' },
     css = { 'prettierd' },
     scss = { 'prettierd' },
