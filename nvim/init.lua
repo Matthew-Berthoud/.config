@@ -350,7 +350,7 @@ vim.api.nvim_create_autocmd('FileType', {
 
 vim.api.nvim_create_autocmd('FileType', {
   -- wrap text in non-code situations
-  pattern = { 'text', 'gitcommit', 'qf' },
+  pattern = { 'text', 'markdown', 'gitcommit', 'qf' },
   callback = function()
     vim.wo.wrap = true
     vim.wo.linebreak = true
