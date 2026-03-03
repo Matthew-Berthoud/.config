@@ -4,10 +4,6 @@
       "rev": "3f86702b54a861a17d7994b2e32a7c648cb12fb1",
       "src": "https://github.com/m4xshen/autoclose.nvim"
     },
-    "autolist.nvim": {
-      "rev": "5f70a5f99e96c8fe3069de042abd2a8ed2deb855",
-      "src": "https://github.com/gaoDean/autolist.nvim"
-    },
     "blink.cmp": {
       "rev": "f85eb6252f4c0212be15c6c4213e9af587574cbe",
       "src": "https://github.com/saghen/blink.cmp"
@@ -79,6 +75,10 @@
     "ts-comments.nvim": {
       "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
       "src": "https://github.com/folke/ts-comments.nvim"
+    },
+    "ts-expand-hover.nvim": {
+      "rev": "9d3c46ae4ad874648bc881f26e33b38230a5c5f9",
+      "src": "https://github.com/nemanjamalesija/ts-expand-hover.nvim"
     },
     "vague.nvim": {
       "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",
