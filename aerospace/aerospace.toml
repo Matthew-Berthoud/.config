@@ -191,6 +191,6 @@ on-mode-changed = []
     run = ['layout h_accordion', 'move-node-to-workspace 1']
 
 [workspace-to-monitor-force-assignment]
-    3 = '(sceptre.*1)|(secondary)'
-    2 = '(sceptre.*2)|(secondary)'
+    3 = '(sceptre.*1)|(DELL S3422DWG)'
+    2 = '(sceptre.*2)|(DELL S3422DWG)'
     1 = 'main'
