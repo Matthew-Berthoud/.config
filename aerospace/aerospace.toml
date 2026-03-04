@@ -176,10 +176,6 @@ on-mode-changed = []
     alt-shift-l = ['join-with right', 'mode main']
 
 [[on-window-detected]]
-    if.app-name-regex-substring = '^(?!(?:Ghostty|Chrome)$).*$'
-    run = ['layout h_accordion', 'move-node-to-workspace 1']
-
-[[on-window-detected]]
     if.app-id = 'com.google.Chrome'
     run = ['layout h_accordion', 'move-node-to-workspace 2']
 
@@ -187,7 +183,14 @@ on-mode-changed = []
     if.app-id = 'com.mitchellh.ghostty'
     run = ['layout h_accordion', 'move-node-to-workspace 3']
 
+[[on-window-detected]]
+    if.app-id = 'com.apple.dt.Xcode'
+    run = ['layout h_accordion', 'move-node-to-workspace 3']
+
+[[on-window-detected]]
+    run = ['layout h_accordion', 'move-node-to-workspace 1']
+
 [workspace-to-monitor-force-assignment]
-    3 = '(sceptre.*1)|(work-monitor-name-tbd)'
-    2 = '(sceptre.*2)|(work-monitor-name-tbd)'
+    3 = '(sceptre.*1)|(secondary)'
+    2 = '(sceptre.*2)|(secondary)'
     1 = 'main'
