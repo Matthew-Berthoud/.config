@@ -45,7 +45,7 @@ automatically-unhide-macos-hidden-apps = true
 # even when they are invisible.
 # This config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
-persistent-workspaces = ["1", "2", "3"]
+persistent-workspaces = ["S", "D", "F", "M", "1", "2", "3"]
 
 # A callback that runs every time binding mode changes
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -128,6 +128,10 @@ on-mode-changed = []
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
     # In your config, you can drop workspace bindings that you don't need
+    alt-s = 'workspace S'
+    alt-d = 'workspace D'
+    alt-f = 'workspace F'
+    alt-m = 'workspace M'
     alt-1 = 'workspace 1'
     alt-2 = 'workspace 2'
     alt-3 = 'workspace 3'
@@ -140,6 +144,10 @@ on-mode-changed = []
     # alt-0 = 'workspace 0'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+    alt-shift-s = 'move-node-to-workspace S'
+    alt-shift-d = 'move-node-to-workspace D'
+    alt-shift-f = 'move-node-to-workspace F'
+    alt-shift-m = 'move-node-to-workspace M'
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
     alt-shift-3 = 'move-node-to-workspace 3'
@@ -176,6 +184,22 @@ on-mode-changed = []
     alt-shift-l = ['join-with right', 'mode main']
 
 [[on-window-detected]]
+    if.app-id = 'com.tinyspeck.slackmacgap'
+    run = 'move-node-to-workspace S'
+
+[[on-window-detected]]
+    if.app-id = 'com.electron.dockerdesktop'
+    run = 'move-node-to-workspace D'
+
+[[on-window-detected]]
+    if.app-id = 'com.apple.finder'
+    run = 'move-node-to-workspace F'
+
+[[on-window-detected]]
+    if.app-id = 'com.spotify.client'
+    run = 'move-node-to-workspace M'
+
+[[on-window-detected]]
     if.app-id = 'com.google.Chrome'
     run = ['layout h_accordion', 'move-node-to-workspace 2']
 
@@ -194,3 +218,7 @@ on-mode-changed = []
     3 = '(Sceptre C27 \(1\))|(DELL S3422DWG)'
     2 = '(Sceptre C27 \(2\))|(DELL S3422DWG)'
     1 = 'main'
+    S = 'main'
+    D = 'main'
+    F = 'main'
+    M = 'main'
