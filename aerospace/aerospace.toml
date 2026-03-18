@@ -207,18 +207,18 @@ on-mode-changed = []
 
 [[on-window-detected]]
     if.app-id = 'com.google.Chrome'
-    run = ['layout h_accordion', 'move-node-to-workspace 2']
+    run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
     if.app-id = 'com.mitchellh.ghostty'
-    run = ['layout h_accordion', 'move-node-to-workspace 3']
+    run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
     if.app-id = 'com.apple.dt.Xcode'
-    run = ['layout h_accordion', 'move-node-to-workspace 3']
+    run = 'move-node-to-workspace 3'
 
 [[on-window-detected]]
-    run = ['layout h_accordion', 'move-node-to-workspace 1']
+    run =  'move-node-to-workspace 1'
 
 [workspace-to-monitor-force-assignment]
     3 = '(Sceptre C27 \(1\))|(DELL S3422DWG)'
