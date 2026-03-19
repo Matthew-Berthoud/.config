@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "LuaSnip": {
+      "rev": "dae4f5aaa3574bd0c2b9dd20fb9542a02c10471c",
+      "src": "https://github.com/L3MON4D3/LuaSnip"
+    },
     "autoclose.nvim": {
       "rev": "3f86702b54a861a17d7994b2e32a7c648cb12fb1",
       "src": "https://github.com/m4xshen/autoclose.nvim"
@@ -75,6 +79,10 @@
     "ts-comments.nvim": {
       "rev": "123a9fb12e7229342f807ec9e6de478b1102b041",
       "src": "https://github.com/folke/ts-comments.nvim"
+    },
+    "ts-expand-hover.nvim": {
+      "rev": "9d3c46ae4ad874648bc881f26e33b38230a5c5f9",
+      "src": "https://github.com/nemanjamalesija/ts-expand-hover.nvim"
     },
     "vague.nvim": {
       "rev": "fcc283576764474ccfbbcca240797d5d7f4d8a78",

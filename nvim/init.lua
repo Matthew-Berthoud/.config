@@ -2,6 +2,7 @@ vim.loader.enable()
 
 vim.pack.add({
   { src = 'https://github.com/JoosepAlviste/nvim-ts-context-commentstring' },
+  { src = 'https://github.com/L3MON4D3/LuaSnip' },
   { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
@@ -47,6 +48,21 @@ vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 local mini_icons = require('mini.icons')
 mini_icons.setup()
 mini_icons.mock_nvim_web_devicons()
+
+require('luasnip').setup({ enable_autosnippets = true })
+require('luasnip.loaders.from_lua').load({
+  paths = { vim.fn.stdpath('config') .. '/snippets/' },
+})
+local ls = require('luasnip')
+vim.keymap.set({ 'i', 's' }, '<C-e>', function()
+  ls.expand_or_jump(1)
+end, { silent = true })
+vim.keymap.set({ 'i', 's' }, '<C-J>', function()
+  ls.jump(1)
+end, { silent = true })
+vim.keymap.set({ 'i', 's' }, '<C-K>', function()
+  ls.jump(-1)
+end, { silent = true })
 
 require('mini.basics').setup()
 require('lazydev').setup()
