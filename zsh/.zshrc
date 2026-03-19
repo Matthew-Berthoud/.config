@@ -22,6 +22,7 @@ alias treedme='tree -a --gitignore --dirsfirst -I ".git/" --noreport | pbcopy'
 alias v="nvim"
 alias vi="nvim"
 alias vim="nvim"
+alias vrg='nvim $(git diff --name-only HEAD; git ls-files --others --exclude-standard)'
 alias wtf="npm -v && node -v && which npm && which node"
 
 eval "$(pyenv init -)"
