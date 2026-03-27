@@ -174,6 +174,45 @@ vim.lsp.config('bashls', {
 })
 vim.lsp.enable('bashls')
 
+vim.lsp.config('html', {
+  cmd = { 'vscode-html-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = { 'html' },
+  root_markers = { 'package.json', '.git' },
+  single_file_support = true,
+  init_options = {
+    configurationSection = { 'html', 'css', 'javascript' },
+    embeddedLanguages = {
+      css = true,
+      javascript = true,
+    },
+  },
+})
+vim.lsp.enable('html')
+
+vim.lsp.config('cssls', {
+  cmd = { 'vscode-css-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = { 'css', 'scss', 'less' },
+  root_markers = { 'package.json', '.git' },
+  single_file_support = true,
+  settings = {
+    css = { validate = true },
+    less = { validate = true },
+    scss = { validate = true },
+  },
+})
+vim.lsp.enable('cssls')
+
+vim.lsp.config('jsonls', {
+  cmd = { 'vscode-json-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = { 'json', 'jsonc' },
+  root_markers = { 'package.json', '.git' },
+  single_file_support = true,
+})
+vim.lsp.enable('jsonls')
+
 require('nvim-treesitter').setup({})
 require('nvim-treesitter').install({
   'bash',

@@ -18,12 +18,13 @@ fi
 
 # List of global packages to ensure are present
 packages=(
+  "@fsouza/prettierd"
+  "@google/gemini-cli"
+  "bash-language-server"
   "npm@latest"
   "prettier"
   "pyright"
-  "@fsouza/prettierd"
-  "bash-language-server"
-  "@google/gemini-cli"
+  "vscode-langservers-extracted"
 )
 
 for pkg in $packages; do
