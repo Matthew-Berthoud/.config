@@ -20,6 +20,7 @@ fi
 packages=(
   "@fsouza/prettierd"
   "@google/gemini-cli"
+  "@tailwindcss/language-server@latest"
   "bash-language-server"
   "npm@latest"
   "prettier"

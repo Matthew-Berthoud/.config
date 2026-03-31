@@ -100,6 +100,58 @@ blink.setup({
 })
 local capabilities = blink.get_lsp_capabilities()
 
+vim.lsp.config('tailwindcss', {
+  cmd = { 'tailwindcss-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = {
+    'html',
+    'css',
+    'scss',
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+    'vue',
+    'svelte',
+  },
+  settings = {
+    tailwindCSS = {
+      validate = true,
+      lint = {
+        cssConflict = 'warning',
+        invalidApply = 'error',
+        invalidScreen = 'error',
+        invalidVariant = 'error',
+        invalidConfigPath = 'error',
+        invalidTailwindDirective = 'error',
+        recommendedVariantOrder = 'warning',
+      },
+      classAttributes = {
+        'class',
+        'className',
+        'class:list',
+        'classList',
+        'ngClass',
+      },
+      includeLanguages = {
+        eelixir = 'html-eex',
+        eruby = 'erb',
+        templ = 'html',
+        htmlangular = 'html',
+      },
+    },
+  },
+  root_markers = {
+    'tailwind.config.js',
+    'tailwind.config.ts',
+    'tailwind.config.mjs',
+    'postcss.config.js',
+    'package.json',
+    '.git',
+  },
+})
+vim.lsp.enable('tailwindcss')
+
 vim.lsp.config('lua_ls', {
   cmd = { 'lua-language-server' },
   capabilities = capabilities,
