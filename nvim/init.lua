@@ -1,7 +1,6 @@
 vim.loader.enable()
 
 vim.pack.add({
-  { src = 'https://github.com/JoosepAlviste/nvim-ts-context-commentstring' },
   { src = 'https://github.com/L3MON4D3/LuaSnip' },
   { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
   { src = 'https://github.com/brianhuster/live-preview.nvim' },
@@ -322,7 +321,6 @@ require('nvim-surround').setup()
 require('mini.extra').setup()
 require('mini.pick').setup()
 vim.env.RIPGREP_CONFIG_PATH = vim.fn.expand('~/.config/ripgrep/config')
-require('ts_context_commentstring').setup()
 require('ts-comments').setup({
   lang = {
     tsx = {
