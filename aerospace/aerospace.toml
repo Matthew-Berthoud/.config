@@ -45,7 +45,7 @@ automatically-unhide-macos-hidden-apps = true
 # even when they are invisible.
 # This config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
-persistent-workspaces = ["S", "D", "F", "N", "M", "1", "2", "3"]
+persistent-workspaces = ["1", "2", "3"]
 
 # A callback that runs every time binding mode changes
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -133,6 +133,7 @@ on-mode-changed = []
     alt-f = 'workspace F'
     alt-m = 'workspace M'
     alt-n = 'workspace N'
+    alt-t = 'workspace T'
     alt-1 = 'workspace 1'
     alt-2 = 'workspace 2'
     alt-3 = 'workspace 3'
@@ -150,6 +151,7 @@ on-mode-changed = []
     alt-shift-f = 'move-node-to-workspace F'
     alt-shift-m = 'move-node-to-workspace M'
     alt-shift-n = 'move-node-to-workspace N'
+    alt-shift-t = 'move-node-to-workspace T'
     alt-shift-1 = 'move-node-to-workspace 1'
     alt-shift-2 = 'move-node-to-workspace 2'
     alt-shift-3 = 'move-node-to-workspace 3'
@@ -206,6 +208,10 @@ on-mode-changed = []
     run = 'move-node-to-workspace N'
 
 [[on-window-detected]]
+    if.app-id = 'com.apple.MobileSMS'
+    run = 'move-node-to-workspace T'
+
+[[on-window-detected]]
     if.app-id = 'com.google.Chrome'
     run = 'move-node-to-workspace 2'
 
@@ -228,3 +234,4 @@ on-mode-changed = []
     D = 'main'
     F = 'main'
     M = 'main'
+    T = 'main'

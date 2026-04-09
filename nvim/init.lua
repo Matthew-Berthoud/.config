@@ -76,6 +76,16 @@ require('lualine').setup({
     },
     lualine_c = {},
   },
+  inactive_sections = {
+    lualine_a = {
+      {
+        'filename',
+        file_status = false,
+        path = 1,
+      },
+    },
+    lualine_c = {},
+  },
 })
 
 local blink = require('blink.cmp')
