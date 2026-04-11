@@ -109,6 +109,104 @@ blink.setup({
 })
 local capabilities = blink.get_lsp_capabilities()
 
+vim.lsp.config('lua_ls', {
+  cmd = { 'lua-language-server' },
+  capabilities = capabilities,
+  filetypes = { 'lua' },
+  root_markers = { '.git' },
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = { 'vim' } },
+      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+    },
+  },
+})
+vim.lsp.enable('lua_ls')
+
+vim.lsp.config('ts_ls', {
+  cmd = { 'typescript-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = {
+    'typescript',
+    'typescriptreact',
+    'javascript',
+    'javascriptreact',
+  },
+  root_markers = { 'package.json', '.git' },
+  single_file_support = true,
+  init_options = {
+    preferences = {
+      includeInlayParameterNameHints = 'all',
+      includeInlayFunctionParameterTypeHints = true,
+      importModuleSpecifierPreference = 'non-relative',
+    },
+  },
+})
+vim.lsp.enable('ts_ls')
+
+vim.lsp.config('eslint', {
+  cmd = { 'vscode-eslint-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+    'vue',
+    'svelte',
+    'astro',
+  },
+  settings = {
+    validate = 'on',
+    packageManager = 'npm',
+    useESLintClass = false,
+    experimental = {
+      useFlatConfig = true,
+    },
+    codeActionOnSave = {
+      enable = false,
+      mode = 'all',
+    },
+    format = false,
+    quiet = false,
+    onIgnoredFiles = 'off',
+    rulesCustomizations = {},
+    run = 'onType',
+    problems = {
+      shortenToSingleLine = false,
+    },
+    nodePath = '',
+    workingDirectory = { mode = 'location' },
+    codeAction = {
+      disableRuleComment = {
+        enable = true,
+        location = 'separateLine',
+      },
+      showDocumentation = {
+        enable = true,
+      },
+    },
+  },
+  root_markers = {
+    -- New Flat Configs
+    'eslint.config.js',
+    'eslint.config.mjs',
+    'eslint.config.cjs',
+    'eslint.config.ts',
+    -- Legacy Configs
+    '.eslintrc',
+    '.eslintrc.js',
+    '.eslintrc.cjs',
+    '.eslintrc.json',
+    '.eslintrc.yml',
+    -- Fallbacks
+    'package.json',
+    '.git',
+  },
+})
+vim.lsp.enable('eslint')
+
 vim.lsp.config('tailwindcss', {
   cmd = { 'tailwindcss-language-server', '--stdio' },
   capabilities = capabilities,
@@ -160,42 +258,6 @@ vim.lsp.config('tailwindcss', {
   },
 })
 vim.lsp.enable('tailwindcss')
-
-vim.lsp.config('lua_ls', {
-  cmd = { 'lua-language-server' },
-  capabilities = capabilities,
-  filetypes = { 'lua' },
-  root_markers = { '.git' },
-  settings = {
-    Lua = {
-      runtime = { version = 'LuaJIT' },
-      diagnostics = { globals = { 'vim' } },
-      workspace = { library = vim.api.nvim_get_runtime_file('', true) },
-    },
-  },
-})
-vim.lsp.enable('lua_ls')
-
-vim.lsp.config('ts_ls', {
-  cmd = { 'typescript-language-server', '--stdio' },
-  capabilities = capabilities,
-  filetypes = {
-    'typescript',
-    'typescriptreact',
-    'javascript',
-    'javascriptreact',
-  },
-  root_markers = { 'package.json', '.git' },
-  single_file_support = true,
-  init_options = {
-    preferences = {
-      includeInlayParameterNameHints = 'all',
-      includeInlayFunctionParameterTypeHints = true,
-      importModuleSpecifierPreference = 'non-relative',
-    },
-  },
-})
-vim.lsp.enable('ts_ls')
 
 vim.lsp.config('pyright', {
   cmd = { 'pyright-langserver', '--stdio' },
