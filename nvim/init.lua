@@ -3,12 +3,12 @@ vim.loader.enable()
 vim.pack.add({
   { src = 'https://github.com/L3MON4D3/LuaSnip' },
   { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
-  { src = 'https://github.com/brianhuster/live-preview.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },
   { src = 'https://github.com/folke/ts-comments.nvim' },
   { src = 'https://github.com/folke/which-key.nvim' },
   { src = 'https://github.com/hakonharnes/img-clip.nvim' },
+  { src = 'https://github.com/iamcco/markdown-preview.nvim' },
   { src = 'https://github.com/kylechui/nvim-surround' },
   { src = 'https://github.com/lewis6991/gitsigns.nvim' },
   { src = 'https://github.com/m4xshen/autoclose.nvim' },
@@ -439,9 +439,10 @@ require('which-key').add({
   { 'gr', group = '[R]eferences' },
 })
 require('img-clip').setup()
-require('live-preview').setup({
-  picker = 'mini.pick',
-})
+
+-- markdown-preview setup:
+vim.fn['mkdp#util#install']()
+vim.keymap.set('n', '<leader>b', '<cmd>MarkdownPreview<CR>')
 
 vim.cmd(':hi statusline guibg=NONE')
 
@@ -666,12 +667,6 @@ vim.keymap.set(
   '<leader>pi',
   '<cmd>PasteImage<cr>',
   { desc = '[P]aste [I]mage from clipboard' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>pl',
-  '<cmd>LivePreview close<CR><cmd>LivePreview start<CR>',
-  { desc = '[L]ive[P]review for current file' }
 )
 vim.keymap.set(
   'n',
