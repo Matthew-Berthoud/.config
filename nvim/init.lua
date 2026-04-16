@@ -494,6 +494,12 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sG', function()
+  local glob = vim.fn.input('Include glob (prefix ! to exclude): ')
+  require('mini.pick').builtin.grep_live({
+    globs = glob ~= '' and { glob } or nil,
+  })
+end)
 vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
 vim.keymap.set(
   'n',
