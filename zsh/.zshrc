@@ -67,6 +67,9 @@ FPATH="$HOME/.docker/completions:$FPATH"
 autoload -Uz compinit
 compinit
 
+# claude
+export PATH="$HOME/.local/bin:$PATH"
+
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
