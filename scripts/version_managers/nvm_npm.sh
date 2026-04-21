@@ -16,12 +16,16 @@ if ! nvm ls "$NODE_VERSION" &>/dev/null; then
   nvm alias default "$NODE_VERSION"
 fi
 
+# Install global packages in the global node version
+nvm use "$NODE_VERSION"
+
 # List of global packages to ensure are present
 packages=(
   "@fsouza/prettierd"
   "@google/gemini-cli"
   "@tailwindcss/language-server@latest"
   "bash-language-server"
+  "graphql-language-service-cli"
   "npm@latest"
   "prettier"
   "pyright"

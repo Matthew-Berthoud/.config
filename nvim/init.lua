@@ -336,13 +336,39 @@ vim.lsp.config('jsonls', {
 })
 vim.lsp.enable('jsonls')
 
+vim.lsp.config('graphql', {
+  cmd = { 'graphql-lsp', 'server', '-m', 'stream' },
+  capabilities = capabilities,
+  filetypes = {
+    'graphql',
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+    'vue',
+    'svelte',
+  },
+  root_markers = {
+    '.graphqlrc.yml',
+    '.graphqlrc',
+    '.graphqlrc.json',
+    'graphql.config.js',
+    'graphql.config.yaml',
+    'package.json',
+    '.git',
+  },
+})
+vim.lsp.enable('graphql')
+
 require('nvim-treesitter').setup({})
 require('nvim-treesitter').install({
   'bash',
   'css',
   'go',
+  'graphql',
   'html',
   'javascript',
+  'json',
   'jsx',
   'latex',
   'lua',
@@ -362,9 +388,11 @@ vim.api.nvim_create_autocmd('FileType', {
     'bash',
     'css',
     'go',
+    'graphql',
     'html',
     'javascript',
     'javascriptreact',
+    'json',
     'jsx',
     'latex',
     'lua',
@@ -379,6 +407,7 @@ vim.api.nvim_create_autocmd('FileType', {
     'typescript',
     'typescriptreact',
     'yaml',
+    'zsh',
   },
   callback = function()
     vim.treesitter.start()

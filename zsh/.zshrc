@@ -25,6 +25,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias vrg='nvim $(git diff --name-only HEAD; git ls-files --others --exclude-standard)'
 alias wtf="npm -v && node -v && which npm && which node"
+alias ald="cd $WORK_REPOS/ATOMS/atoms-local-dev && docker desktop start && make down-v && git pull && make pull && make up && cd -"
 
 eval "$(pyenv init -)"
 
