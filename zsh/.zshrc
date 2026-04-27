@@ -33,10 +33,6 @@ source "$SCRIPTS/git-prompt.sh"
 PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
-# End of LM Studio CLI section
-
 # Ruby version manager
 eval "$(rbenv init - zsh)"
 
