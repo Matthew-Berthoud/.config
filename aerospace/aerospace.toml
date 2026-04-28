@@ -210,6 +210,10 @@ on-mode-changed = []
     run = 'move-node-to-workspace F'
 
 [[on-window-detected]]
+    if.app-id = 'com.apple.QuickTimePlayerX'
+    run = 'move-node-to-workspace F'
+
+[[on-window-detected]]
     if.app-id = 'com.spotify.client'
     run = 'move-node-to-workspace M'
 
