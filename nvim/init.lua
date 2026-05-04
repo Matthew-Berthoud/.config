@@ -513,6 +513,29 @@ vim.keymap.set(
   ':bp | bd #<CR>',
   { desc = '[D]elete [B]uffer but preserve split' }
 )
+vim.keymap.set('n', '<leader>bx', function()
+  -- 1. Create a table to keep track of buffers currently visible in any window
+  local visible_bufs = {}
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    visible_bufs[vim.api.nvim_win_get_buf(win)] = true
+  end
+  local closed_count = 0
+  -- 2. Iterate over all buffers
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    -- 3. Check if it's loaded, not visible, and a "listed" buffer
+    if vim.api.nvim_buf_is_loaded(buf) and not visible_bufs[buf] then
+      if vim.bo[buf].buflisted then
+        -- 4. Attempt to delete gracefully (won't close buffers with unsaved changes)
+        local success, _ = pcall(vim.api.nvim_buf_delete, buf, { force = false })
+        if success then
+          closed_count = closed_count + 1
+        end
+      end
+    end
+  end
+  vim.notify('Closed ' .. closed_count .. ' hidden buffers', vim.log.levels.INFO)
+end, { desc = 'Close [X] all hidden listed [B]uffers' })
+
 vim.keymap.set('n', '<leader>e', ':Oil<CR>', { desc = 'Open Oil [E]xplorer' })
 vim.keymap.set(
   'n',
@@ -522,19 +545,20 @@ vim.keymap.set(
 )
 vim.keymap.set('n', '<leader>sf', ':Pick files<CR>', { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<leader>sg', ':Pick grep_live<CR>', { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<leader>sm', ':Pick marks<CR>', { desc = '[S]earch [M]arks' })
 vim.keymap.set('n', '<leader>sh', ':Pick help<CR>', { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sG', function()
   local glob = vim.fn.input('Include glob (prefix ! to exclude): ')
   require('mini.pick').builtin.grep_live({
     globs = glob ~= '' and { glob } or nil,
   })
-end)
+end, { desc = '[S]earch by [G]rep in files matching [G]lob' })
 vim.keymap.set('n', '<leader>sr', ':Pick resume<CR>', { desc = '[S]earch [R]esume' })
 vim.keymap.set(
   'n',
   'grd',
   '<cmd>lua vim.lsp.buf.definition()<CR>',
-  { desc = '[G]o to [D]efinition' }
+  { desc = '[G]o to [R]eal [D]efinition' }
 )
 
 vim.schedule(function()

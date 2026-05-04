@@ -1,8 +1,5 @@
 #!/bin/zsh
 
-pwd="$(pwd)"
-cd "$CONFIG"
-
 # Color codes for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -41,5 +38,3 @@ defaults write com.apple.spaces spans-displays -bool true && killall SystemUISer
 echo "${GREEN}Configured!${NC}"
 
 echo "${BLUE}Sync complete!${NC}"
-
-cd "$pwd"
