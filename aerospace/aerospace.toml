@@ -237,8 +237,8 @@ on-mode-changed = []
     run =  'move-node-to-workspace 1'
 
 [workspace-to-monitor-force-assignment]
-    3 = '(Sceptre C27 \(1\))|(DELL S3422DWG)'
-    2 = '(Sceptre C27 \(2\))|(DELL S3422DWG)'
+    3 = '(Sceptre C27(\s*\(1\))?|(DELL S3422DWG))'
+    2 = '(Sceptre C27(\s*\(2\))?|(DELL S3422DWG))'
     1 = 'main'
     S = 'main'
     D = 'main'
