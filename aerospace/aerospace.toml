@@ -7,7 +7,11 @@ config-version = 2
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-after-startup-command = []
+after-startup-command = [
+    "move-workspace-to-monitor --workspace 2 'Sceptre C27 \\(1\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    "move-workspace-to-monitor --workspace 3 'Sceptre C27 \\(2\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    'workspace 1',
+]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -241,12 +245,3 @@ on-mode-changed = []
 [[on-window-detected]]
     run =  'move-node-to-workspace 1'
 
-[workspace-to-monitor-force-assignment]
-    3 = ['Sceptre C27 \(2\)', 'Sceptre C27', 'DELL S3422DWG', 'main']
-    2 = ['Sceptre C27 \(1\)', 'Sceptre C27', 'DELL S3422DWG', 'main']
-    1 = 'main'
-    S = 'main'
-    D = 'main'
-    F = 'main'
-    M = 'main'
-    T = 'main'
