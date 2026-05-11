@@ -8,8 +8,8 @@ config-version = 2
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
-    "move-workspace-to-monitor --workspace 2 'Sceptre C27 \\(1\\)' 'Sceptre C27' 'DELL S3422DWG' main",
-    "move-workspace-to-monitor --workspace 3 'Sceptre C27 \\(2\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    "move-workspace-to-monitor --workspace 2 'Sceptre C27 \\(2\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    "move-workspace-to-monitor --workspace 3 'Sceptre C27 \\(1\\)' 'Sceptre C27' 'DELL S3422DWG' main",
     'workspace 1',
 ]
 
