@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-daily_notes="$PWD/daily"
+daily_notes="${1:-$PWD/daily}"
 mkdir -p "$daily_notes"
 
 todays_note_file="$daily_notes/$(date +'%Y-%m-%d').md"
