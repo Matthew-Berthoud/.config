@@ -29,16 +29,13 @@ if ! tmux has-session -t="$session_name" 2>/dev/null; then
 
   tmux new-window -t $session_name -n "server" -c "$directory"
 
-  tmux new-window -t $session_name -n "notes" -c "$directory"
-  # Open notes directory with same path relative to $NOTES as the repo is relative to $REPOS
-  relative_path="${directory#$REPOS/}"
-  echo $relative_path
-  # Config isn't in $REPOS so its notes are just in $NOTES/config
+  # Stash notes path on the session for the daily-note popup
   if [[ $directory == $CONFIG ]]; then
-    tmux send-keys -t ${session_name}:notes "cd $NOTES/config" C-m
+    notes_path="$NOTES/config"
   else
-    tmux send-keys -t ${session_name}:notes "mkdir -p $NOTES/$relative_path && cd $NOTES/$relative_path" C-m
+    notes_path="$NOTES/${directory#$REPOS/}"
   fi
+  tmux set-option -t "$session_name" @notes_path "$notes_path"
 
   tmux select-window -t ${session_name}:terminal
 fi
