@@ -1,5 +1,16 @@
 #!/usr/bin/env zsh
 
+is_window=false
+pass_args=()
+
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    --window) is_window=true ;;
+    *) pass_args+=("$1") ;;
+  esac
+  shift
+done
+
 notes_path=$(tmux display-message -p '#{@notes_path}')
 
 if [[ -z "$notes_path" ]]; then
@@ -21,4 +32,8 @@ if [[ ! -d "$daily_dir" ]]; then
   [[ "$answer" == "y" || "$answer" == "Y" ]] || exit 0
 fi
 
-exec zsh "$WORKFLOW/open_daily_note.sh" "$daily_dir"
+if [[ "$is_window" == true ]]; then
+  tmux new-window -n "notes" "zsh $WORKFLOW/open_daily_note.sh $daily_dir $pass_args"
+else
+  exec zsh "$WORKFLOW/open_daily_note.sh" "$daily_dir" "${pass_args[@]}"
+fi
