@@ -26,7 +26,7 @@ alias vi="nvim"
 alias vim="nvim"
 alias vrg='nvim $(git diff --name-only HEAD; git ls-files --others --exclude-standard)'
 alias wtf="npm -v && node -v && which npm && which node"
-alias ald="cd $WORK_REPOS/ATOMS/atoms-local-dev && docker desktop start && make down-v && git pull && make pull && make up && cd -"
+alias ald="cd $WORK_REPOS/ATOMS/atoms-local-dev/starscream && docker desktop start && make down-v && git pull && make pull && make up && cd -"
 
 eval "$(pyenv init -)"
 
@@ -68,6 +68,10 @@ compinit
 
 # claude
 export PATH="$HOME/.local/bin:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
+# End of LM Studio CLI section
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
