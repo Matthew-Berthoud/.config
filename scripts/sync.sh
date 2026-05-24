@@ -35,6 +35,10 @@ defaults write com.apple.dock expose-group-apps -bool true && killall Dock
 # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
 defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
 
+# Disable command space for Spotlight, since we use Raycast now
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "{enabled = 0; value = { parameters = (32, 49, 1048576); type = standard; }; }"
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "{enabled = 0; value = { parameters = (32, 49, 1572864); type = standard; }; }"
+
 echo "${GREEN}Configured!${NC}"
 
 echo "${BLUE}Sync complete!${NC}"
