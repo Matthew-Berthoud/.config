@@ -7,10 +7,17 @@ config-version = 2
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
+
+# ┌───────┐┌────────┐
+# │ E web ││ R code │
+# └───────┘└────────┘
+#      ┌───────┐
+#      │ A all │
+#      └───────┘
 after-startup-command = [
-    "move-workspace-to-monitor --workspace 2 'Sceptre C27 \\(2\\)' 'Sceptre C27' 'DELL S3422DWG' main",
-    "move-workspace-to-monitor --workspace 3 'Sceptre C27 \\(1\\)' 'Sceptre C27' 'DELL S3422DWG' main",
-    'workspace 1',
+    "move-workspace-to-monitor --workspace E 'Sceptre C27 \\(2\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    "move-workspace-to-monitor --workspace R 'Sceptre C27 \\(1\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    'workspace A',
 ]
 
 # Start AeroSpace at login
@@ -49,7 +56,7 @@ automatically-unhide-macos-hidden-apps = true
 # even when they are invisible.
 # This config version is only available since 'config-version = 2'
 # Fallback value (if you omit the key): persistent-workspaces = []
-persistent-workspaces = ["1", "2", "3"]
+persistent-workspaces = []
 
 # A callback that runs every time binding mode changes
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -132,38 +139,24 @@ on-mode-changed = []
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
     # In your config, you can drop workspace bindings that you don't need
+    alt-e = 'workspace E'
+    alt-r = 'workspace R'
     alt-s = 'workspace S'
     alt-d = 'workspace D'
     alt-f = 'workspace F'
     alt-m = 'workspace M'
     alt-t = 'workspace T'
-    alt-1 = 'workspace 1'
-    alt-2 = 'workspace 2'
-    alt-3 = 'workspace 3'
-    # alt-4 = 'workspace 4'
-    # alt-5 = 'workspace 5'
-    # alt-6 = 'workspace 6'
-    # alt-7 = 'workspace 7'
-    # alt-8 = 'workspace 8'
-    # alt-9 = 'workspace 9'
-    # alt-0 = 'workspace 0'
+    alt-a = 'workspace A'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+    alt-shift-e = 'move-node-to-workspace E'
+    alt-shift-r = 'move-node-to-workspace R'
     alt-shift-s = 'move-node-to-workspace S'
     alt-shift-d = 'move-node-to-workspace D'
     alt-shift-f = 'move-node-to-workspace F'
     alt-shift-m = 'move-node-to-workspace M'
     alt-shift-t = 'move-node-to-workspace T'
-    alt-shift-1 = 'move-node-to-workspace 1'
-    alt-shift-2 = 'move-node-to-workspace 2'
-    alt-shift-3 = 'move-node-to-workspace 3'
-    # alt-shift-4 = 'move-node-to-workspace 4'
-    # alt-shift-5 = 'move-node-to-workspace 5'
-    # alt-shift-6 = 'move-node-to-workspace 6'
-    # alt-shift-7 = 'move-node-to-workspace 7'
-    # alt-shift-8 = 'move-node-to-workspace 8'
-    # alt-shift-9 = 'move-node-to-workspace 9'
-    # alt-shift-0 = 'move-node-to-workspace 0'
+    alt-shift-a = 'move-node-to-workspace A'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
     alt-tab = 'workspace-back-and-forth'
@@ -230,21 +223,19 @@ on-mode-changed = []
     if.app-id = 'com.apple.MobileSMS'
     run = 'move-node-to-workspace T'
 
-# ┌───────┐┌────────┐
-# │ 2 web ││ 3 code │
-# └───────┘└────────┘
-#      ┌──────┐
-#      │ main │
-#      └──────┘
-[[on-window-detected]]
-    if.app-id = 'com.google.Chrome'
-    run = 'move-node-to-workspace 2'
+# R for wRiting code
 [[on-window-detected]]
     if.app-id = 'com.mitchellh.ghostty'
-    run = 'move-node-to-workspace 3'
+    run = 'move-node-to-workspace R'
 [[on-window-detected]]
     if.app-id = 'com.apple.dt.Xcode'
-    run = 'move-node-to-workspace 3'
-[[on-window-detected]]
-    run =  'move-node-to-workspace 1'
+    run = 'move-node-to-workspace R'
 
+# E for thEEE intErnEt
+[[on-window-detected]]
+    if.app-id = 'com.google.Chrome'
+    run = 'move-node-to-workspace E'
+
+# A for All
+[[on-window-detected]]
+    run =  'move-node-to-workspace A'
