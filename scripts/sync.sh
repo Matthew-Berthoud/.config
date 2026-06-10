@@ -17,7 +17,7 @@ echo "${GREEN}Linked!${NC}"
 
 # 1. Brew
 echo "${BLUE}Updating system packages via Brew...${NC}"
-brew bundle --clean # Uses HOMEBREW_BUNDLE_FILE defined in ~/.zshenv
+brew bundle --clean --force # Uses HOMEBREW_BUNDLE_FILE defined in ~/.zshenv
 
 # 2. Run Version Manager Package Manifests
 V_MANAGERS="$HOME/.config/scripts/version_managers"
