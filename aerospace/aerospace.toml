@@ -8,15 +8,8 @@ config-version = 2
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 
-# ┌───────┐┌────────┐
-# │ E web ││ R code │
-# └───────┘└────────┘
-#      ┌───────┐
-#      │ A all │
-#      └───────┘
 after-startup-command = [
-    "move-workspace-to-monitor --workspace E 'Sceptre C27 \\(2\\)' 'Sceptre C27' 'DELL S3422DWG' main",
-    "move-workspace-to-monitor --workspace R 'Sceptre C27 \\(1\\)' 'Sceptre C27' 'DELL S3422DWG' main",
+    "move-workspace-to-monitor --workspace E 'Sceptre C27' 'DELL S3422DWG' main",
     'workspace A',
 ]
 
@@ -140,7 +133,6 @@ on-mode-changed = []
     # See: https://nikitabobko.github.io/AeroSpace/commands#workspace
     # In your config, you can drop workspace bindings that you don't need
     alt-e = 'workspace E'
-    alt-r = 'workspace R'
     alt-s = 'workspace S'
     alt-d = 'workspace D'
     alt-f = 'workspace F'
@@ -150,7 +142,6 @@ on-mode-changed = []
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
     alt-shift-e = 'move-node-to-workspace E'
-    alt-shift-r = 'move-node-to-workspace R'
     alt-shift-s = 'move-node-to-workspace S'
     alt-shift-d = 'move-node-to-workspace D'
     alt-shift-f = 'move-node-to-workspace F'
