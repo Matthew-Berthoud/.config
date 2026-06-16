@@ -1,1 +1,1 @@
-yes | bob use nightly
+bob use nightly
