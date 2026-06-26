@@ -27,6 +27,7 @@ alias vim="nvim"
 alias vrg='nvim $(git diff --name-only HEAD; git ls-files --others --exclude-standard)'
 alias wtf="npm -v && node -v && which npm && which node"
 alias ald="cd $WORK_REPOS/ATOMS/atoms-local-dev/starscream && docker desktop start && make down-v && git pull && make pull && make up && cd -"
+alias dif='open "https://tex.gerbil-cloud.ts.net:3000/oms/atoms-ui/compare/main...$(git branch --show-current)"'
 
 eval "$(pyenv init -)"
 
