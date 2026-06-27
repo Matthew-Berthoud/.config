@@ -32,7 +32,10 @@ alias dif='open "https://tex.gerbil-cloud.ts.net:3000/oms/atoms-ui/compare/main.
 eval "$(pyenv init -)"
 
 source "$SCRIPTS/git-prompt.sh"
-PROMPT='%F{blue}%1~%f$(__git_ps1) %# '
+PROMPT='
+%F{8}╭─%f %F{cyan}%*%f %F{blue}%1~%f$(__git_ps1)
+%F{8}╰─%f %# '
+
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Ruby version manager
