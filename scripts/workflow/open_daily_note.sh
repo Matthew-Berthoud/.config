@@ -16,7 +16,7 @@ daily_notes="${daily_notes:-$PWD/daily}"
 mkdir -p "$daily_notes"
 
 todays_note_file="$daily_notes/$(date +'%Y-%m-%d').md"
-all_notes=($daily_notes/*.md(N.om))
+all_notes=($daily_notes/*.md(N.On))
 prev_note=""
 
 # Find the most recent note that isn't today's
