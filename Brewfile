@@ -1,4 +1,3 @@
-brew "anomalyco/tap/opencode"
 brew "bash"
 brew "bob"
 brew "curl"
