@@ -27,6 +27,8 @@ packages=(
   "bash-language-server"
   "graphql-language-service-cli"
   "npm@latest"
+  "oxfmt"
+  "oxlint"
   "prettier"
   "pyright"
   "vscode-langservers-extracted"

@@ -145,8 +145,8 @@ vim.lsp.config('ts_ls', {
 })
 vim.lsp.enable('ts_ls')
 
-vim.lsp.config('eslint', {
-  cmd = { 'vscode-eslint-language-server', '--stdio' },
+vim.lsp.config('oxlint', {
+  cmd = { 'oxlint', '--lsp' },
   capabilities = capabilities,
   filetypes = {
     'javascript',
@@ -157,55 +157,15 @@ vim.lsp.config('eslint', {
     'svelte',
     'astro',
   },
-  settings = {
-    validate = 'on',
-    packageManager = 'npm',
-    useESLintClass = false,
-    experimental = {
-      useFlatConfig = true,
-    },
-    codeActionOnSave = {
-      enable = false,
-      mode = 'all',
-    },
-    format = false,
-    quiet = false,
-    onIgnoredFiles = 'off',
-    rulesCustomizations = {},
-    run = 'onType',
-    problems = {
-      shortenToSingleLine = false,
-    },
-    nodePath = '',
-    workingDirectory = { mode = 'location' },
-    codeAction = {
-      disableRuleComment = {
-        enable = true,
-        location = 'separateLine',
-      },
-      showDocumentation = {
-        enable = true,
-      },
-    },
-  },
   root_markers = {
-    -- New Flat Configs
-    'eslint.config.js',
-    'eslint.config.mjs',
-    'eslint.config.cjs',
-    'eslint.config.ts',
-    -- Legacy Configs
-    '.eslintrc',
-    '.eslintrc.js',
-    '.eslintrc.cjs',
-    '.eslintrc.json',
-    '.eslintrc.yml',
-    -- Fallbacks
+    '.oxlintrc.json',
+    '.oxlintrc.jsonc',
+    'oxlint.config.ts',
     'package.json',
     '.git',
   },
 })
-vim.lsp.enable('eslint')
+vim.lsp.enable('oxlint')
 
 vim.lsp.config('tailwindcss', {
   cmd = { 'tailwindcss-language-server', '--stdio' },
@@ -596,6 +556,21 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
+-- Run oxlint's fix-all on save before conform formats (registered before
+-- conform.setup so its BufWritePre runs first). buf_request_sync blocks until
+-- the server applies its edits, guaranteeing fix-then-format ordering.
+vim.api.nvim_create_autocmd('BufWritePre', {
+  pattern = { '*.js', '*.jsx', '*.ts', '*.tsx', '*.vue', '*.svelte', '*.astro' },
+  callback = function(args)
+    for _, client in ipairs(vim.lsp.get_clients({ bufnr = args.buf, name = 'oxlint' })) do
+      vim.lsp.buf_request_sync(args.buf, 'workspace/executeCommand', {
+        command = 'oxc.fixAll',
+        arguments = { { uri = vim.uri_from_bufnr(args.buf) } },
+      }, 1000)
+    end
+  end,
+})
+
 require('conform').setup({
   format_on_save = function()
     return {
@@ -603,19 +578,19 @@ require('conform').setup({
     }
   end,
   formatters_by_ft = {
-    javascript = { 'prettierd' },
-    javascriptreact = { 'prettierd' },
-    typescript = { 'prettierd' },
-    typescriptreact = { 'prettierd' },
-    vue = { 'prettierd' },
-    css = { 'prettierd' },
-    scss = { 'prettierd' },
-    less = { 'prettierd' },
-    html = { 'prettierd' },
-    json = { 'prettierd' },
-    yaml = { 'prettierd' },
-    markdown = { 'prettierd' },
-    graphql = { 'prettierd' },
+    javascript = { 'oxfmt' },
+    javascriptreact = { 'oxfmt' },
+    typescript = { 'oxfmt' },
+    typescriptreact = { 'oxfmt' },
+    vue = { 'oxfmt' },
+    css = { 'oxfmt' },
+    scss = { 'oxfmt' },
+    less = { 'oxfmt' },
+    html = { 'oxfmt' },
+    json = { 'oxfmt' },
+    yaml = { 'oxfmt' },
+    markdown = { 'oxfmt' },
+    graphql = { 'oxfmt' },
     python = { 'ruff_organize_imports', 'ruff_fix', 'ruff_format' },
     lua = { 'stylua' },
     sh = { 'shfmt' },
