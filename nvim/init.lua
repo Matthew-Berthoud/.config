@@ -559,15 +559,28 @@ vim.api.nvim_create_autocmd('FileType', {
 -- Run oxlint's fix-all on save before conform formats (registered before
 -- conform.setup so its BufWritePre runs first). buf_request_sync blocks until
 -- the server applies its edits, guaranteeing fix-then-format ordering.
+-- The LSP round-trip is only worth it when oxlint actually reported something,
+-- so clean saves (the common case) skip it entirely and just run oxfmt.
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = { '*.js', '*.jsx', '*.ts', '*.tsx', '*.vue', '*.svelte', '*.astro' },
   callback = function(args)
-    for _, client in ipairs(vim.lsp.get_clients({ bufnr = args.buf, name = 'oxlint' })) do
-      vim.lsp.buf_request_sync(args.buf, 'workspace/executeCommand', {
-        command = 'oxc.fixAll',
-        arguments = { { uri = vim.uri_from_bufnr(args.buf) } },
-      }, 1000)
+    if #vim.lsp.get_clients({ bufnr = args.buf, name = 'oxlint' }) == 0 then
+      return
     end
+    local has_oxlint_diag = false
+    for _, d in ipairs(vim.diagnostic.get(args.buf)) do
+      if d.source == 'oxlint' then
+        has_oxlint_diag = true
+        break
+      end
+    end
+    if not has_oxlint_diag then
+      return
+    end
+    vim.lsp.buf_request_sync(args.buf, 'workspace/executeCommand', {
+      command = 'oxc.fixAll',
+      arguments = { { uri = vim.uri_from_bufnr(args.buf) } },
+    }, 1000)
   end,
 })
 
