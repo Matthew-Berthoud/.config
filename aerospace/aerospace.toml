@@ -228,4 +228,5 @@ on-mode-changed = []
 
 # A for All
 [[on-window-detected]]
+    if = 'true'
     run =  'move-node-to-workspace A'
