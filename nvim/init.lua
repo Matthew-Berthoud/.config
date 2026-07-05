@@ -161,11 +161,84 @@ vim.lsp.config('oxlint', {
     '.oxlintrc.json',
     '.oxlintrc.jsonc',
     'oxlint.config.ts',
-    'package.json',
-    '.git',
+    'oxlint.config.js',
+    'oxlint.config.mjs',
   },
 })
 vim.lsp.enable('oxlint')
+
+vim.lsp.config('eslint', {
+  cmd = { 'vscode-eslint-language-server', '--stdio' },
+  capabilities = capabilities,
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+    'vue',
+    'svelte',
+    'astro',
+  },
+  root_markers = {
+    '.eslintrc',
+    '.eslintrc.js',
+    '.eslintrc.cjs',
+    '.eslintrc.json',
+    '.eslintrc.yaml',
+    '.eslintrc.yml',
+    'eslint.config.js',
+    'eslint.config.mjs',
+    'eslint.config.cjs',
+    'eslint.config.ts',
+    'eslint.config.mts',
+    'eslint.config.cts',
+  },
+  -- The vscode-eslint server needs a workspaceFolder to resolve the project's
+  -- eslint install and config; derive it per-buffer from the resolved root.
+  before_init = function(_, config)
+    if config.root_dir then
+      config.settings = config.settings or {}
+      config.settings.workspaceFolder = {
+        uri = vim.uri_from_fname(config.root_dir),
+        name = vim.fn.fnamemodify(config.root_dir, ':t'),
+      }
+    end
+  end,
+  -- Answer the server-initiated requests so they don't error in the log.
+  handlers = {
+    ['eslint/openDoc'] = function()
+      return {}
+    end,
+    ['eslint/confirmESLintExecution'] = function()
+      return 4 -- always allow
+    end,
+    ['eslint/probeFailed'] = function()
+      return {}
+    end,
+    ['eslint/noLibrary'] = function()
+      return {}
+    end,
+  },
+  settings = {
+    validate = 'on',
+    useESLintClass = false,
+    experimental = { useFlatConfig = vim.NIL }, -- let server auto-detect
+    codeActionOnSave = { enable = false, mode = 'all' },
+    format = false, -- Prettier/oxfmt own formatting, not ESLint
+    quiet = false,
+    onIgnoredFiles = 'off',
+    rulesCustomizations = {},
+    run = 'onType',
+    problems = { shortenToSingleLine = false },
+    nodePath = '',
+    workingDirectory = { mode = 'location' },
+    codeAction = {
+      disableRuleComment = { enable = true, location = 'separateLine' },
+      showDocumentation = { enable = true },
+    },
+  },
+})
+vim.lsp.enable('eslint')
 
 vim.lsp.config('tailwindcss', {
   cmd = { 'tailwindcss-language-server', '--stdio' },
@@ -556,33 +629,53 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- Run oxlint's fix-all on save before conform formats (registered before
--- conform.setup so its BufWritePre runs first). buf_request_sync blocks until
--- the server applies its edits, guaranteeing fix-then-format ordering.
--- The LSP round-trip is only worth it when oxlint actually reported something,
--- so clean saves (the common case) skip it entirely and just run oxfmt.
+-- Run the attached linter's fix-all on save before conform formats (registered
+-- before conform.setup so its BufWritePre runs first). buf_request_sync blocks
+-- until the server applies its edits, guaranteeing fix-then-format ordering.
+-- Whichever linter LSP is attached (oxlint in oxlint projects, eslint in eslint
+-- projects) drives its own fix-all command. The LSP round-trip is only worth it
+-- when that linter actually reported something, so clean saves (the common case)
+-- skip it entirely and just run the formatter.
 vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = { '*.js', '*.jsx', '*.ts', '*.tsx', '*.vue', '*.svelte', '*.astro' },
   callback = function(args)
-    if #vim.lsp.get_clients({ bufnr = args.buf, name = 'oxlint' }) == 0 then
-      return
-    end
-    local has_oxlint_diag = false
-    for _, d in ipairs(vim.diagnostic.get(args.buf)) do
-      if d.source == 'oxlint' then
-        has_oxlint_diag = true
+    local linter
+    for _, c in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+      if c.name == 'oxlint' or c.name == 'eslint' then
+        linter = c
         break
       end
     end
-    if not has_oxlint_diag then
+    if not linter then
       return
     end
+    local flagged = false
+    for _, d in ipairs(vim.diagnostic.get(args.buf)) do
+      if d.source == linter.name then
+        flagged = true
+        break
+      end
+    end
+    if not flagged then
+      return
+    end
+    local uri = vim.uri_from_bufnr(args.buf)
+    local cmd, cmd_args
+    if linter.name == 'oxlint' then
+      cmd, cmd_args = 'oxc.fixAll', { { uri = uri } }
+    else
+      cmd, cmd_args =
+        'eslint.applyAllFixes', { { uri = uri, version = vim.lsp.util.buf_versions[args.buf] } }
+    end
     vim.lsp.buf_request_sync(args.buf, 'workspace/executeCommand', {
-      command = 'oxc.fixAll',
-      arguments = { { uri = vim.uri_from_bufnr(args.buf) } },
+      command = cmd,
+      arguments = cmd_args,
     }, 1000)
   end,
 })
+
+-- Web filetypes: try Prettier first (only runs where configured), else oxfmt.
+local web_fmt = { 'prettierd', 'prettier', 'oxfmt', stop_after_first = true }
 
 require('conform').setup({
   format_on_save = function()
@@ -591,19 +684,21 @@ require('conform').setup({
     }
   end,
   formatters_by_ft = {
-    javascript = { 'oxfmt' },
-    javascriptreact = { 'oxfmt' },
-    typescript = { 'oxfmt' },
-    typescriptreact = { 'oxfmt' },
-    vue = { 'oxfmt' },
-    css = { 'oxfmt' },
-    scss = { 'oxfmt' },
-    less = { 'oxfmt' },
-    html = { 'oxfmt' },
-    json = { 'oxfmt' },
-    yaml = { 'oxfmt' },
-    markdown = { 'oxfmt' },
-    graphql = { 'oxfmt' },
+    -- Prefer Prettier when the project configures it (require_cwd below), else
+    -- fall back to oxfmt. stop_after_first runs whichever comes first.
+    javascript = web_fmt,
+    javascriptreact = web_fmt,
+    typescript = web_fmt,
+    typescriptreact = web_fmt,
+    vue = web_fmt,
+    css = web_fmt,
+    scss = web_fmt,
+    less = web_fmt,
+    html = web_fmt,
+    json = web_fmt,
+    yaml = web_fmt,
+    markdown = web_fmt,
+    graphql = web_fmt,
     python = { 'ruff_organize_imports', 'ruff_fix', 'ruff_format' },
     lua = { 'stylua' },
     sh = { 'shfmt' },
@@ -611,6 +706,10 @@ require('conform').setup({
     zsh = { 'shfmt' },
   },
   formatters = {
+    -- Only run Prettier when a Prettier config is found; otherwise it is skipped
+    -- and oxfmt (the fallback) runs.
+    prettierd = { require_cwd = true },
+    prettier = { require_cwd = true },
     shfmt = {
       -- prepends these args to the command
       prepend_args = { '-i', '2' }, -- indent with 2 spaces
