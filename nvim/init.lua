@@ -676,6 +676,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 
 -- Web filetypes: try Prettier first (only runs where configured), else oxfmt.
 local web_fmt = { 'prettierd', 'prettier', 'oxfmt', stop_after_first = true }
+local util = require('conform.util')
 
 require('conform').setup({
   format_on_save = function()
@@ -706,10 +707,28 @@ require('conform').setup({
     zsh = { 'shfmt' },
   },
   formatters = {
-    -- Only run Prettier when a Prettier config is found; otherwise it is skipped
-    -- and oxfmt (the fallback) runs.
-    prettierd = { require_cwd = true },
-    prettier = { require_cwd = true },
+    prettierd = {
+      require_cwd = true,
+      cwd = util.root_file({
+        '.prettierrc',
+        '.prettierrc.json',
+        '.prettierrc.js',
+        '.prettierrc.cjs',
+        'prettier.config.js',
+        'prettier.config.cjs',
+      }),
+    },
+    prettier = {
+      require_cwd = true,
+      cwd = util.root_file({
+        '.prettierrc',
+        '.prettierrc.json',
+        '.prettierrc.js',
+        '.prettierrc.cjs',
+        'prettier.config.js',
+        'prettier.config.cjs',
+      }),
+    },
     shfmt = {
       -- prepends these args to the command
       prepend_args = { '-i', '2' }, -- indent with 2 spaces
