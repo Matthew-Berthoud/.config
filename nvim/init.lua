@@ -110,9 +110,56 @@ blink.setup({
 local capabilities = blink.get_lsp_capabilities()
 
 -- Filetypes handled by both linters (oxlint and eslint), gated per-project by
--- their respective root markers so only one attaches.
+-- their respective root_dir so only the one a project actually uses attaches.
 local web_ft =
   { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'astro' }
+
+-- root_markers alone does NOT gate attachment (a nil root still attaches in
+-- single-file mode); only a root_dir function that conditionally calls on_dir
+-- does. See :h lsp-root_dir. Attach a server only where the project uses it.
+local function root_if(markers)
+  return function(bufnr, on_dir)
+    local root = vim.fs.root(bufnr, markers)
+    if root then
+      on_dir(root)
+    end
+  end
+end
+
+-- ESLint may store config in package.json ("eslintConfig", legacy) with no
+-- standalone file, so detect that too.
+local eslint_markers = {
+  '.eslintrc',
+  '.eslintrc.js',
+  '.eslintrc.cjs',
+  '.eslintrc.json',
+  '.eslintrc.yaml',
+  '.eslintrc.yml',
+  'eslint.config.js',
+  'eslint.config.mjs',
+  'eslint.config.cjs',
+  'eslint.config.ts',
+  'eslint.config.mts',
+  'eslint.config.cts',
+}
+local function eslint_root(bufnr, on_dir)
+  local root = vim.fs.root(bufnr, eslint_markers)
+  if not root then
+    local pkg = vim.fs.root(bufnr, 'package.json')
+    if pkg then
+      local ok, lines = pcall(vim.fn.readfile, pkg .. '/package.json')
+      if ok then
+        local decoded, tbl = pcall(vim.json.decode, table.concat(lines, '\n'))
+        if decoded and type(tbl) == 'table' and tbl.eslintConfig ~= nil then
+          root = pkg
+        end
+      end
+    end
+  end
+  if root then
+    on_dir(root)
+  end
+end
 
 vim.lsp.config('lua_ls', {
   cmd = { 'lua-language-server' },
@@ -140,6 +187,12 @@ vim.lsp.config('ts_ls', {
   },
   root_markers = { 'package.json', '.git' },
   single_file_support = true,
+  -- Prettier/oxfmt own formatting; keep tsserver from fighting them (and ESLint)
+  -- via the conform lsp_format = 'fallback' path.
+  on_attach = function(client)
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.documentRangeFormattingProvider = false
+  end,
   init_options = {
     preferences = {
       includeInlayParameterNameHints = 'all',
@@ -154,34 +207,23 @@ vim.lsp.config('oxlint', {
   cmd = { 'oxlint', '--lsp' },
   capabilities = capabilities,
   filetypes = web_ft,
-  root_markers = {
+  root_dir = root_if({
     '.oxlintrc.json',
     '.oxlintrc.jsonc',
     'oxlint.config.ts',
     'oxlint.config.js',
     'oxlint.config.mjs',
-  },
+  }),
 })
 vim.lsp.enable('oxlint')
 
 vim.lsp.config('eslint', {
   cmd = { 'vscode-eslint-language-server', '--stdio' },
-  capabilities = capabilities,
+  capabilities = vim.tbl_deep_extend('force', capabilities, {
+    textDocument = { formatting = { dynamicRegistration = true } },
+  }),
   filetypes = web_ft,
-  root_markers = {
-    '.eslintrc',
-    '.eslintrc.js',
-    '.eslintrc.cjs',
-    '.eslintrc.json',
-    '.eslintrc.yaml',
-    '.eslintrc.yml',
-    'eslint.config.js',
-    'eslint.config.mjs',
-    'eslint.config.cjs',
-    'eslint.config.ts',
-    'eslint.config.mts',
-    'eslint.config.cts',
-  },
+  root_dir = eslint_root,
   -- The vscode-eslint server needs a workspaceFolder to resolve the project's
   -- eslint install and config; derive it per-buffer from the resolved root.
   before_init = function(_, config)
@@ -212,7 +254,7 @@ vim.lsp.config('eslint', {
     validate = 'on',
     useESLintClass = false,
     experimental = { useFlatConfig = vim.NIL }, -- let server auto-detect
-    format = false, -- Prettier/oxfmt own formatting, not ESLint
+    format = true, -- allow formatting as a fallback
     quiet = false,
     onIgnoredFiles = 'off',
     rulesCustomizations = {},
@@ -269,12 +311,12 @@ vim.lsp.config('tailwindcss', {
       },
     },
   },
-  root_markers = {
+  root_dir = root_if({
     'tailwind.config.js',
     'tailwind.config.ts',
     'tailwind.config.mjs',
     'postcss.config.js',
-  },
+  }),
 })
 vim.lsp.enable('tailwindcss')
 
@@ -367,13 +409,13 @@ vim.lsp.config('graphql', {
     'vue',
     'svelte',
   },
-  root_markers = {
+  root_dir = root_if({
     '.graphqlrc.yml',
     '.graphqlrc',
     '.graphqlrc.json',
     'graphql.config.js',
     'graphql.config.yaml',
-  },
+  }),
 })
 vim.lsp.enable('graphql')
 
@@ -669,6 +711,18 @@ require('conform').setup({
         '.prettierrc.cjs',
         'prettier.config.js',
         'prettier.config.cjs',
+      }),
+    },
+    -- Only format with oxfmt in ox projects, so it doesn't reformat (and fight
+    -- ESLint in) projects that own their own style.
+    oxfmt = {
+      require_cwd = true,
+      cwd = util.root_file({
+        '.oxlintrc.json',
+        '.oxlintrc.jsonc',
+        'oxlint.config.ts',
+        'oxlint.config.js',
+        'oxlint.config.mjs',
       }),
     },
     shfmt = {
