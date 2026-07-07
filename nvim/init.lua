@@ -109,6 +109,11 @@ blink.setup({
 })
 local capabilities = blink.get_lsp_capabilities()
 
+-- Filetypes handled by both linters (oxlint and eslint), gated per-project by
+-- their respective root markers so only one attaches.
+local web_ft =
+  { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'vue', 'svelte', 'astro' }
+
 vim.lsp.config('lua_ls', {
   cmd = { 'lua-language-server' },
   capabilities = capabilities,
@@ -148,15 +153,7 @@ vim.lsp.enable('ts_ls')
 vim.lsp.config('oxlint', {
   cmd = { 'oxlint', '--lsp' },
   capabilities = capabilities,
-  filetypes = {
-    'javascript',
-    'javascriptreact',
-    'typescript',
-    'typescriptreact',
-    'vue',
-    'svelte',
-    'astro',
-  },
+  filetypes = web_ft,
   root_markers = {
     '.oxlintrc.json',
     '.oxlintrc.jsonc',
@@ -170,15 +167,7 @@ vim.lsp.enable('oxlint')
 vim.lsp.config('eslint', {
   cmd = { 'vscode-eslint-language-server', '--stdio' },
   capabilities = capabilities,
-  filetypes = {
-    'javascript',
-    'javascriptreact',
-    'typescript',
-    'typescriptreact',
-    'vue',
-    'svelte',
-    'astro',
-  },
+  filetypes = web_ft,
   root_markers = {
     '.eslintrc',
     '.eslintrc.js',
@@ -223,7 +212,6 @@ vim.lsp.config('eslint', {
     validate = 'on',
     useESLintClass = false,
     experimental = { useFlatConfig = vim.NIL }, -- let server auto-detect
-    codeActionOnSave = { enable = false, mode = 'all' },
     format = false, -- Prettier/oxfmt own formatting, not ESLint
     quiet = false,
     onIgnoredFiles = 'off',
@@ -286,8 +274,6 @@ vim.lsp.config('tailwindcss', {
     'tailwind.config.ts',
     'tailwind.config.mjs',
     'postcss.config.js',
-    'package.json',
-    '.git',
   },
 })
 vim.lsp.enable('tailwindcss')
@@ -387,8 +373,6 @@ vim.lsp.config('graphql', {
     '.graphqlrc.json',
     'graphql.config.js',
     'graphql.config.yaml',
-    'package.json',
-    '.git',
   },
 })
 vim.lsp.enable('graphql')
@@ -593,6 +577,9 @@ vim.keymap.set(
   '<cmd>lua vim.lsp.buf.definition()<CR>',
   { desc = '[G]o to [R]eal [D]efinition' }
 )
+vim.keymap.set('n', '<leader>lf', function()
+  vim.lsp.buf.code_action({ context = { only = { 'source.fixAll' } }, apply = true })
+end, { desc = '[L]int [F]ix all' })
 
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
@@ -626,51 +613,6 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.wo.linebreak = true
     vim.wo.breakindent = true
     vim.wo.showbreak = '↳ '
-  end,
-})
-
--- Run the attached linter's fix-all on save before conform formats (registered
--- before conform.setup so its BufWritePre runs first). buf_request_sync blocks
--- until the server applies its edits, guaranteeing fix-then-format ordering.
--- Whichever linter LSP is attached (oxlint in oxlint projects, eslint in eslint
--- projects) drives its own fix-all command. The LSP round-trip is only worth it
--- when that linter actually reported something, so clean saves (the common case)
--- skip it entirely and just run the formatter.
-vim.api.nvim_create_autocmd('BufWritePre', {
-  pattern = { '*.js', '*.jsx', '*.ts', '*.tsx', '*.vue', '*.svelte', '*.astro' },
-  callback = function(args)
-    local linter
-    for _, c in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
-      if c.name == 'oxlint' or c.name == 'eslint' then
-        linter = c
-        break
-      end
-    end
-    if not linter then
-      return
-    end
-    local flagged = false
-    for _, d in ipairs(vim.diagnostic.get(args.buf)) do
-      if d.source == linter.name then
-        flagged = true
-        break
-      end
-    end
-    if not flagged then
-      return
-    end
-    local uri = vim.uri_from_bufnr(args.buf)
-    local cmd, cmd_args
-    if linter.name == 'oxlint' then
-      cmd, cmd_args = 'oxc.fixAll', { { uri = uri } }
-    else
-      cmd, cmd_args =
-        'eslint.applyAllFixes', { { uri = uri, version = vim.lsp.util.buf_versions[args.buf] } }
-    end
-    vim.lsp.buf_request_sync(args.buf, 'workspace/executeCommand', {
-      command = cmd,
-      arguments = cmd_args,
-    }, 1000)
   end,
 })
 
