@@ -216,19 +216,20 @@ on-mode-changed = []
     if.app-id = 'com.apple.MobileSMS'
     run = 'move-node-to-workspace T'
 
-# E for Everything important (browser and code)
+# E for thE intErnEt
 [[on-window-detected]]
     if.app-id = 'com.google.Chrome'
     run = 'move-node-to-workspace E'
+
+# R for wRiting code
 [[on-window-detected]]
     if.app-id = 'com.mitchellh.ghostty'
-    run = 'move-node-to-workspace E'
+    run = 'move-node-to-workspace R'
 [[on-window-detected]]
     if.app-id = 'com.apple.dt.Xcode'
-    run = 'move-node-to-workspace E'
+    run = 'move-node-to-workspace R'
 
 
 # A for All
 [[on-window-detected]]
-    if = 'true'
     run =  'move-node-to-workspace A'
