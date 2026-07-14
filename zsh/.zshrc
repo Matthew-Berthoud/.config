@@ -73,10 +73,6 @@ compinit
 # claude
 export PATH="$HOME/.local/bin:$PATH"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/matthewberthoud/.lmstudio/bin"
-# End of LM Studio CLI section
-
 # ngrok auto-completions
 if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
