@@ -161,6 +161,41 @@ local function eslint_root(bufnr, on_dir)
   end
 end
 
+-- Tailwind v4 uses CSS-based config (no tailwind.config.* / postcss.config.*),
+-- so fall back to detecting the tailwindcss dependency in package.json. This
+-- keeps the server off in non-Tailwind projects while attaching in both v3
+-- (config-file) and v4 (CSS-config) projects.
+local tailwind_markers = {
+  'tailwind.config.js',
+  'tailwind.config.ts',
+  'tailwind.config.mjs',
+  'tailwind.config.cjs',
+  'postcss.config.js',
+  'postcss.config.mjs',
+  'postcss.config.cjs',
+}
+local function tailwind_root(bufnr, on_dir)
+  local root = vim.fs.root(bufnr, tailwind_markers)
+  if not root then
+    local pkg = vim.fs.root(bufnr, 'package.json')
+    if pkg then
+      local ok, lines = pcall(vim.fn.readfile, pkg .. '/package.json')
+      if ok then
+        local decoded, tbl = pcall(vim.json.decode, table.concat(lines, '\n'))
+        if decoded and type(tbl) == 'table' then
+          local deps = vim.tbl_extend('keep', tbl.dependencies or {}, tbl.devDependencies or {})
+          if deps.tailwindcss ~= nil then
+            root = pkg
+          end
+        end
+      end
+    end
+  end
+  if root then
+    on_dir(root)
+  end
+end
+
 vim.lsp.config('lua_ls', {
   cmd = { 'lua-language-server' },
   capabilities = capabilities,
@@ -311,12 +346,7 @@ vim.lsp.config('tailwindcss', {
       },
     },
   },
-  root_dir = root_if({
-    'tailwind.config.js',
-    'tailwind.config.ts',
-    'tailwind.config.mjs',
-    'postcss.config.js',
-  }),
+  root_dir = tailwind_root,
 })
 vim.lsp.enable('tailwindcss')
 
