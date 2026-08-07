@@ -38,9 +38,34 @@ defaults write com.apple.dock expose-group-apps -bool true && killall Dock
 # https://nikitabobko.github.io/AeroSpace/guide#a-note-on-displays-have-separate-spaces
 defaults write com.apple.spaces spans-displays -bool true && killall SystemUIServer
 
-# Disable command space for Spotlight, since we use Raycast now
-defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "{enabled = 0; value = { parameters = (32, 49, 1048576); type = standard; }; }"
-defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 65 "{enabled = 0; value = { parameters = (32, 49, 1572864); type = standard; }; }"
+# Disable command space for Spotlight, since we use Raycast now.
+# Must be XML: the old-style "{enabled = 0; ...}" syntax types every token as a
+# string, which the hotkey system ignores, so the shortcut returns after reboot.
+disable_hotkey() {
+  local id="$1" modifier="$2"
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$id" "
+    <dict>
+      <key>enabled</key><false/>
+      <key>value</key>
+      <dict>
+        <key>type</key><string>standard</string>
+        <key>parameters</key>
+        <array>
+          <integer>32</integer>
+          <integer>49</integer>
+          <integer>$modifier</integer>
+        </array>
+      </dict>
+    </dict>"
+}
+
+disable_hotkey 64 1048576 # Cmd+Space     -> Show Spotlight search
+disable_hotkey 65 1572864 # Cmd+Opt+Space -> Show Finder search window
+
+# Flush the cached prefs and reload the hotkey table so this applies now,
+# rather than being overwritten from cache at the next logout.
+killall cfprefsd
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 echo "${GREEN}Configured!${NC}"
 
