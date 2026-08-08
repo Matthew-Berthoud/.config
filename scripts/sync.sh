@@ -19,7 +19,6 @@ echo "${GREEN}Linked!${NC}"
 echo "${BLUE}Updating system packages via Brew...${NC}"
 # Uses HOMEBREW_BUNDLE_FILE defined in ~/.zshenv
 brew bundle cleanup --force
-brew trust nikitabobko/tap
 brew bundle install
 
 # 2. Run Version Manager Package Manifests

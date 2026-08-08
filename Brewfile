@@ -51,4 +51,4 @@ cask "slack"
 cask "spotify"
 cask "tailscale-app"
 cask "visual-studio-code"
-tap "nikitabobko/tap"
+tap "nikitabobko/tap", trusted: true
