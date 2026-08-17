@@ -73,6 +73,9 @@ compinit
 # claude
 export PATH="$HOME/.local/bin:$PATH"
 
+# avoid github api rate-limiting for bob (neovim version manager)
+export GITHUB_TOKEN=$(gh auth token)
+
 # ngrok auto-completions
 if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
