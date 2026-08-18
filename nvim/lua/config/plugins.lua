@@ -1,5 +1,4 @@
 vim.pack.add({
-  { src = 'https://github.com/L3MON4D3/LuaSnip' },
   { src = 'https://github.com/MeanderingProgrammer/render-markdown.nvim' },
   { src = 'https://github.com/christoomey/vim-tmux-navigator' },
   { src = 'https://github.com/folke/lazydev.nvim' },

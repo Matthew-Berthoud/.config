@@ -81,6 +81,9 @@ if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
 
+# increase max open file descriptors from 256 so that neovim doesn't complain
+ulimit -n 8192
+
 # THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
