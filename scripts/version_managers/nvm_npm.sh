@@ -35,7 +35,12 @@ packages=(
 )
 
 for pkg in $packages; do
-  if ! npm list -g "${pkg%%@*}" &>/dev/null; then
+  # Strip only a trailing version tag. "${pkg%%@*}" would expand to the empty
+  # string for scoped names like @fsouza/prettierd, so `npm list -g ""` always
+  # succeeded and those packages were silently never installed.
+  name="${pkg%@*}"
+  [ -z "$name" ] && name="$pkg"
+  if ! npm list -g --depth=0 "$name" &>/dev/null; then
     echo "Installing global npm package: $pkg"
     npm i -g "$pkg"
   fi
