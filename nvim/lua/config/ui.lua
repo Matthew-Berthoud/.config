@@ -64,6 +64,7 @@ require('render-markdown').setup({
   heading = { backgrounds = { '', '', '', '', '', '' } },
   completions = { lsp = { enabled = true } },
   code = { border = 'thin' },
+  latex = { enabled = false },
 })
 require('img-clip').setup()
 
