@@ -32,39 +32,14 @@ vim.lsp.config('lua_ls', {
   },
 })
 
-vim.lsp.config('ts_ls', {
-  cmd = { 'typescript-language-server', '--stdio' },
+vim.lsp.config('tsgo', {
+  cmd = { 'tsc', '--lsp', '-stdio' },
   filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
   root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
-  -- Prettier/oxfmt own formatting; keep tsserver from fighting them.
   on_attach = function(client)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
   end,
-  init_options = {
-    preferences = {
-      includeInlayParameterNameHints = 'all',
-      includeInlayFunctionParameterTypeHints = true,
-      importModuleSpecifierPreference = 'non-relative',
-    },
-  },
-  settings = {
-    diagnostics = {
-      -- eslint/oxlint own unused-symbol reporting -- their rule is configurable
-      -- (`argsIgnorePattern` for `_`-prefixed args) and autofixable, tsserver's
-      -- is neither. Drop tsserver's duplicates so nothing is reported twice.
-      ignoredCodes = {
-        6133, -- '{0}' is declared but its value is never read
-        6138, -- Property '{0}' is declared but its value is never read
-        6192, -- All imports in import declaration are unused
-        6196, -- '{0}' is declared but never used
-        6198, -- All destructured elements are unused
-        6199, -- All variables are unused
-        6205, -- All type parameters are unused
-        7028, -- Unused label
-      },
-    },
-  },
 })
 
 vim.lsp.config('oxlint', {
@@ -298,7 +273,7 @@ vim.lsp.enable({
   'oxlint',
   'pyright',
   'tailwindcss',
-  'ts_ls',
+  'tsgo',
 })
 
 -- Write every file an LSP rename touched, so the change lands on disk straight
