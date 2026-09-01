@@ -188,6 +188,9 @@ on-mode-changed = []
     if.app-id = 'com.postmanlabs.mac'
     run = 'move-node-to-workspace D'
 [[on-window-detected]]
+    if.app-id = 'com.usebruno.app'
+    run = 'move-node-to-workspace D'
+[[on-window-detected]]
     if.app-id = 'com.google.chrome.for.testing'
     run = 'move-node-to-workspace D'
 [[on-window-detected]]

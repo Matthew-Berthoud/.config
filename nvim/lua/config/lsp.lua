@@ -32,7 +32,7 @@ vim.lsp.config('lua_ls', {
   },
 })
 
-vim.lsp.config('ts_native', {
+vim.lsp.config('tsgo', {
   cmd = { 'tsc', '--lsp', '-stdio' },
   filetypes = { 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
   root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
@@ -274,7 +274,7 @@ vim.lsp.enable({
   'oxlint',
   'pyright',
   'tailwindcss',
-  'ts_native',
+  'tsgo',
 })
 
 -- Write every file an LSP rename touched, so the change lands on disk straight
