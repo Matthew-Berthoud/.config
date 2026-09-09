@@ -1,6 +1,5 @@
 # AGENTS.md
 
-joe sucks. Make no mistakes.
 This file provides guidance to LLM Agents when working with code in this repository.
 
 Personal macOS dotfiles. Configs live in `~/.config/<tool>/` and are applied system-wide via `scripts/sync.sh` (`dotsync` alias), which symlinks zsh/git configs to `~/`, runs `brew bundle --clean`, and applies macOS defaults.
