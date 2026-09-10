@@ -74,7 +74,12 @@ require('oil').setup({
     timeout_ms = 1000,
     autosave_changes = true,
   },
-  view_options = { show_hidden = true },
+  view_options = {
+    show_hidden = true,
+    is_always_hidden = function(name)
+      return name == '..' or name == '.git'
+    end,
+  },
   columns = { 'icon', 'permissions', 'size', 'mtime' },
 })
 
