@@ -1,9 +1,10 @@
 [user]
 	name = Matthew Berthoud
-	email = matthewberthoud@gmail.com
 [init]
 	defaultBranch = main
 
+[include]
+	path = ~/.gitconfig-personal
 [includeIf "gitdir:~/repos/black-cape/"]
 	path = ~/.gitconfig-work
 [filter "lfs"]
