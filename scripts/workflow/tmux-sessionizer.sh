@@ -3,10 +3,8 @@
 if [[ $# -eq 1 ]]; then
   directory=${1:A}
 else
-  repos_dirs=($REPOS/*(N/D))
-  personal_repos=(${repos_dirs:#*/black-cape})
-  work_repos=($WORK_REPOS/*/*(N/D))
-  directory=$(print -l $CONFIG $work_repos $personal_repos | fzf --delimiter / --with-nth -1)
+  git_dirs=(${(f)"$(find $REPOS -maxdepth 4 \( -name node_modules -o -name .venv \) -prune -o -name .git -print -prune 2>/dev/null)"})
+  directory=$(print -l $CONFIG ${git_dirs:h} | fzf --delimiter / --with-nth -1)
 fi
 
 if [[ -z $directory ]]; then
