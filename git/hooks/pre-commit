@@ -1,0 +1,27 @@
+#!/bin/sh
+# Global pre-commit hook (core.hooksPath in git/.gitconfig).
+
+branch=$(git symbolic-ref --short -q HEAD)
+
+case "$branch" in
+  main|master|dev)
+    # Hooks get no stdin; read from the terminal. No terminal (GUI/agent) => abort.
+    if ! { exec < /dev/tty; } 2>/dev/null; then
+      echo "pre-commit: refusing to commit to '$branch' without a terminal (use --no-verify to override)." >&2
+      exit 1
+    fi
+    printf "You're committing directly to '%s'. Continue? [y/N] " "$branch"
+    read -r answer
+    case "$answer" in
+      [yY]) ;;
+      *) echo "Commit aborted."; exit 1 ;;
+    esac
+    ;;
+esac
+
+# A global hooksPath disables per-repo .git/hooks; chain to the repo's own hook
+# so tools like pre-commit / husky-in-.git/hooks still run.
+local_hook="$(git rev-parse --git-common-dir)/hooks/pre-commit"
+if [ -x "$local_hook" ]; then
+  exec "$local_hook" "$@"
+fi
