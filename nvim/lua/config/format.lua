@@ -22,6 +22,7 @@ require('conform').setup({
     css = web_fmt,
     graphql = web_fmt,
     html = web_fmt,
+    java = { 'google-java-format' },
     javascript = web_fmt,
     javascriptreact = web_fmt,
     json = web_fmt,
