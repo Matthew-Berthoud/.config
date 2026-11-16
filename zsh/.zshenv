@@ -5,5 +5,6 @@ export SCRIPTS="$CONFIG/scripts"
 export WORKFLOW="$SCRIPTS/workflow"
 export NOTES="$HOME/Desktop/notes"
 export HOMEBREW_BUNDLE_FILE="$CONFIG/Brewfile"
+export JAVA_HOME=/opt/homebrew/opt/openjdk@21
 export PATH="$HOME/Library/Application Support/bob/nvim-bin:$PATH"
 . "$HOME/.cargo/env"
