@@ -3,3 +3,5 @@
 tags
 *.local
 
+# gcloud stores credentails and stuff in ~/.config for some reason
+gcloud
